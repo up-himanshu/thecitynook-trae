@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
-import Map from "./Map";
+import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt } from "react-icons/fa";
 
 const Footer = () => {
   const hostInfo = {
@@ -42,47 +41,55 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="border-t border-slate-700 pt-8 space-y-4">
-              <div className="space-y-2">
-                <p className="text-xl font-medium">Call for booking:</p>
-                <p className="text-3xl font-bold text-yellow-400"><a href="phone:+919782001181">{contactInfo.phone}</a></p>
-              </div>
-
-              <div className="flex space-x-6">
-                {contactInfo.social.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-300 hover:text-yellow-400 transition-colors"
-                      aria-label={item.label}
-                    >
-                      <Icon className="w-6 h-6" />
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div className="border-t border-slate-700 pt-8 space-y-4">
-                <div className="flex space-x-8">
-                  <div>
-                    <p className="text-slate-400 text-sm">Check-in</p>
-                    <p className="text-slate-300 font-medium">{hostInfo.checkInTime}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-sm">Check-out</p>
-                    <p className="text-slate-300 font-medium">{hostInfo.checkOutTime}</p>
-                  </div>
-                </div>
-              </div>
+            <div className="flex space-x-6">
+              {contactInfo.social.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <a
+                    key={index}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-300 hover:text-yellow-400 transition-colors"
+                    aria-label={item.label}
+                  >
+                    <Icon className="w-6 h-6" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          <div className="h-[500px]">
-            <Map />
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-xl font-medium">Call for booking:</p>
+                <p className="text-3xl font-bold text-yellow-400"><a href="tel:+919782001181">{contactInfo.phone}</a></p>
+              </div>
+
+              <div className="flex space-x-8 mt-6">
+                <div>
+                  <p className="text-slate-400 text-sm">Check-in</p>
+                  <p className="text-slate-300 font-medium">{hostInfo.checkInTime}</p>
+                </div>
+                <div>
+                  <p className="text-slate-400 text-sm">Check-out</p>
+                  <p className="text-slate-300 font-medium">{hostInfo.checkOutTime}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <a
+                href="https://maps.app.goo.gl/mw1dJnR5TRBSQphu6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 text-yellow-400 hover:text-yellow-300 transition-colors"
+              >
+                <FaMapMarkerAlt className="w-5 h-5" />
+                <span>Click here for directions</span>
+              </a>
+            </div>
           </div>
         </div>
 

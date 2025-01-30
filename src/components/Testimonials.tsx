@@ -1,5 +1,4 @@
-import { StarIcon } from '@heroicons/react/20/solid';
-import Image from 'next/image';
+import TestimonialCard from "./TestimonialCard";
 
 interface Testimonial {
   id: number;
@@ -13,36 +12,40 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
+    name: "Udit",
     rating: 5,
-    comment: "Absolutely loved my stay! The location was perfect and the amenities were top-notch. Will definitely be coming back!",
-    date: "March 2024",
-    image: "/images/11.JPG"
+    comment:
+      "Had a wonderful stay. The property looks the same as in the pictures. It was clean, well-organized, and had all the amenities we needed for a comfortable stay. The space was cozy and inviting. The host was very responsive and accommodating. Highly recommend this place for anyone looking for a peaceful and hassle-free stay! Would definitely return.",
+    date: "December 2024",
+    image: "/images/udit.avif",
   },
   {
     id: 2,
-    name: "Michael Chen",
-    rating: 4,
-    comment: "Great urban retreat with amazing city views. The apartment was clean and modern. Highly recommend!",
-    date: "February 2024",
-    image: "/images/12.jpg"
+    name: "Mayank",
+    rating: 5,
+    comment:
+      "Spotless, cozy stay with great amenities. Perfect location near attractions. Host was friendly, responsive, and provided helpful recommendations. Highly recommend!",
+    date: "December 2024",
+    image: "",
   },
   {
     id: 3,
-    name: "Emma Davis",
+    name: "Devang",
     rating: 5,
-    comment: "Perfect location for exploring the city. The host was very responsive and helpful throughout our stay.",
-    date: "January 2024",
-    image: "/images/13.JPG"
+    comment:
+      "It was a really nice stay, the host is very friendly and super nice would recommend to everyone who is looking for a stay in jaipur :)",
+    date: "January 2025",
+    image: "/images/devang.avif",
   },
   {
     id: 4,
-    name: "David Wilson",
+    name: "Raghav",
     rating: 5,
-    comment: "Exceptional experience! The attention to detail and modern amenities made our stay truly memorable.",
+    comment: `Lovely place, quite and very approachable.
+We loved our stay as Astha was very co operative.`,
     date: "December 2023",
-    image: "/images/1.JPG"
-  }
+    image: "/images/raghav.avif",
+  },
 ];
 
 const Testimonials = () => {
@@ -51,34 +54,14 @@ const Testimonials = () => {
       <h2 className="text-2xl font-semibold mb-6">Guest Reviews</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="bg-gray-50 rounded-lg shadow-md overflow-hidden p-4 mt-2">
-            <div className="flex justify-center mb-4">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                <Image
-                  src={testimonial.image}
-                  alt={`${testimonial.name}'s profile`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-medium text-gray-900">{testimonial.name}</h3>
-                <span className="text-sm text-gray-500">{testimonial.date}</span>
-              </div>
-              <div className="flex items-center mb-2">
-                {[...Array(5)].map((_, index) => (
-                  <StarIcon
-                    key={index}
-                    className={`h-5 w-5 ${index < testimonial.rating ? 'text-yellow-400' : 'text-gray-200'}`}
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
-              <p className="text-gray-600 text-sm">{testimonial.comment}</p>
-            </div>
-          </div>
+          <TestimonialCard
+            key={testimonial.id}
+            name={testimonial.name}
+            rating={testimonial.rating}
+            comment={testimonial.comment}
+            date={testimonial.date}
+            image={testimonial.image}
+          />
         ))}
       </div>
     </div>
