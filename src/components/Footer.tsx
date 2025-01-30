@@ -78,7 +78,7 @@ const Footer = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="space-y-2">
-                <p className="text-xl font-medium">Call for booking:</p>
+                <p className="text-xl font-medium">Call or WhatsApp for booking:</p>
                 <p className="text-3xl font-bold text-yellow-400">
                   <a href="tel:+919782001181">{contactInfo.phone}</a>
                 </p>

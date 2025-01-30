@@ -1,10 +1,21 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
 
-const ReservationBar = () => {
+const ReservationBar = ({ onSubmitSuccess }) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showPersonalDetails, setShowPersonalDetails] = useState(false);
+  const [personalDetails, setPersonalDetails] = useState({
+    name: '',
+    phone: '',
+    email: ''
+  });
+  const [guestCount, setGuestCount] = useState(1);
+  const [showGuestSelector, setShowGuestSelector] = useState(false);
+  const guestSelectorRef = useRef(null);
   const calendarRef = useRef(null);
+  const personalDetailsRef = useRef(null);
   const [selectedDates, setSelectedDates] = useState({
     checkIn: null,
     checkOut: null
@@ -16,6 +27,14 @@ const ReservationBar = () => {
           !event.target.closest('.calendar-trigger')) {
         setShowCalendar(false);
       }
+      if (personalDetailsRef.current && !personalDetailsRef.current.contains(event.target) && 
+          !event.target.closest('.personal-details-trigger')) {
+        setShowPersonalDetails(false);
+      }
+      if (guestSelectorRef.current && !guestSelectorRef.current.contains(event.target) && 
+          !event.target.closest('.guest-selector-trigger')) {
+        setShowGuestSelector(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -26,6 +45,22 @@ const ReservationBar = () => {
 
   const handleDateClick = () => {
     setShowCalendar(!showCalendar);
+  };
+
+  const handlePersonalDetailsClick = () => {
+    setShowPersonalDetails(!showPersonalDetails);
+  };
+
+  const handlePersonalDetailsSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const details = {
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      email: formData.get('email')
+    };
+    setPersonalDetails(details);
+    setShowPersonalDetails(false);
   };
 
   const handleDateSelect = (date) => {
@@ -53,16 +88,70 @@ const ReservationBar = () => {
     return `${formatDate(selectedDates.checkIn)} - ${selectedDates.checkOut ? formatDate(selectedDates.checkOut) : 'Select'}`;
   };
 
+  const getDisplayText = () => {
+    if (personalDetails.name) {
+      return `${personalDetails.name} · ${personalDetails.phone}`;
+    }
+    return 'Name and contact details';
+  };
+
   return (
     <div className="relative -mt-[138px] mx-auto w-7/12 bg-white rounded-lg shadow-lg p-6 flex items-center justify-between gap-4" style={{ zIndex: 50 }}>
-      <div className="flex items-center gap-2 flex-1 border-r border-gray-200 pr-4">
+      <div className="flex items-center gap-2 flex-1 border-r border-gray-200 pr-4 relative">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
-        <div className="flex flex-col">
-          <label className="text-xs text-gray-500">Location</label>
-          <input type="text" placeholder="Where are you going?" className="border-none p-0 text-sm focus:ring-0" />
+        <div className="flex flex-col cursor-pointer personal-details-trigger" onClick={handlePersonalDetailsClick}>
+          <label className="text-xs text-gray-500">Personal Details</label>
+          <input 
+            type="text" 
+            readOnly 
+            value={getDisplayText()} 
+            className="border-none p-0 text-sm focus:ring-0 cursor-pointer" 
+          />
         </div>
+        {showPersonalDetails && (
+          <div ref={personalDetailsRef} className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-6" style={{ width: '300px', zIndex: 9999 }}>
+            <form onSubmit={handlePersonalDetailsSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={personalDetails.name}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Phone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={personalDetails.phone}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={personalDetails.email}
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 transition-colors"
+              >
+                Save Details
+              </button>
+            </form>
+          </div>
+        )}
       </div>
       <div className="flex items-center gap-2 flex-1 border-r border-gray-200 pr-4 relative">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,16 +227,60 @@ const ReservationBar = () => {
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
           <label className="text-xs text-gray-500">Guests</label>
-          <select className="border-none p-0 text-sm focus:ring-0">
-            <option>1 guest</option>
-            <option>2 guests</option>
-            <option>3 guests</option>
-            <option>4 guests</option>
-          </select>
+          <div 
+            className="cursor-pointer guest-selector-trigger"
+            onClick={() => setShowGuestSelector(!showGuestSelector)}
+          >
+            <input 
+              type="text" 
+              readOnly 
+              value={`${guestCount} ${guestCount === 1 ? 'guest' : 'guests'}`}
+              className="border-none p-0 text-sm focus:ring-0 cursor-pointer"
+            />
+          </div>
+          {showGuestSelector && (
+            <div 
+              ref={guestSelectorRef} 
+              className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4"
+              style={{ width: '200px', zIndex: 9999 }}
+            >
+              {[1, 2, 3, 4].map((num) => (
+                <div
+                  key={num}
+                  onClick={() => {
+                    setGuestCount(num);
+                    setShowGuestSelector(false);
+                  }}
+                  className="py-2 px-4 hover:bg-gray-50 cursor-pointer rounded-md transition-colors"
+                >
+                  {num} {num === 1 ? 'guest' : 'guests'}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
+      <button
+        onClick={() => {
+          if (!personalDetails.name || !personalDetails.phone || !personalDetails.email) {
+            alert('Please fill in your personal details');
+            return;
+          }
+          if (!selectedDates.checkIn || !selectedDates.checkOut) {
+            alert('Please select your check-in and check-out dates');
+            return;
+          }
+          // Here you can implement the actual booking submission
+          alert(`Booking submitted!\n\nGuest: ${personalDetails.name}\nDates: ${formatDateRange()}\nGuests: ${guestCount}`);
+          onSubmitSuccess();
+        }}
+        className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
+        aria-label="Book Now"
+      >
+        <FaArrowRight className="w-5 h-5" />
+      </button>
     </div>
   );
 };

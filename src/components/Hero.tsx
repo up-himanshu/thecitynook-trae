@@ -7,7 +7,7 @@ const Hero = () => {
     <>
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold mb-4">The City Nook - Jaipur</h1>
-        <p className="text-gray-600 mt-4">Stays, Rentals & Experiences</p>
+        <p className="text-gray-600 mt-4">Stays, Rentals & Experiences in Jagatpura</p>
       </div>
 
       {/* Property Images */}
