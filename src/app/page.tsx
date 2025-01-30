@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {showNotification && (
-        <div className="fixed top-0 left-0 right-0 bg-green-50 text-green-800 px-4 py-3 shadow-md transition-all duration-300 ease-in-out z-[100]">
+        <div className="mt-16 bg-green-50 text-green-800 px-4 py-3 shadow-md transition-all duration-300 ease-in-out">
           <div className="container mx-auto flex justify-between items-center">
             <p>Your reservation request has been submitted. We will call you back soon to proceed further.</p>
             <button

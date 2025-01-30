@@ -12,7 +12,7 @@ const Footer = () => {
     description:
       "Passionate about creating memorable stays in the heart of the city. With a background in hospitality and interior design, I ensure every detail of your stay is perfect. I love sharing local insights and making guests feel at home in our urban retreat.",
     hostingSince: "2019",
-    photo: "/images/host.JPG",
+    photo: "/images/host.jpeg",
     checkInTime: "1:00 PM",
     checkOutTime: "11:00 AM",
   };
@@ -34,7 +34,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-900 text-white py-16">
+    <footer id="contact" className="bg-slate-900 text-white py-16">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="space-y-8">
@@ -78,7 +78,9 @@ const Footer = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="space-y-2">
-                <p className="text-xl font-medium">Call or WhatsApp for booking:</p>
+                <p className="text-xl font-medium">
+                  Call or WhatsApp for booking:
+                </p>
                 <p className="text-3xl font-bold text-yellow-400">
                   <a href="tel:+919782001181">{contactInfo.phone}</a>
                 </p>
