@@ -370,10 +370,9 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                             onClick={() => isSelectable && handleDateSelect(date)}
                             className={`
                               text-center py-2 text-sm rounded-full cursor-pointer w-10 h-10 flex items-center justify-center mx-auto
-                              ${
-                                isPast || (!isSelectable && !isBlocked) ? "text-gray-400 cursor-not-allowed" 
+                              ${isSelected ? "bg-blue-500 text-white"
+                                : isPast || (!isSelectable && !isBlocked) ? "text-gray-400 cursor-not-allowed" 
                                 : isBlocked ? "bg-red-100 text-red-600 cursor-not-allowed"
-                                : isSelected ? "bg-blue-500 text-white"
                                 : isInRange ? "bg-blue-100"
                                 : "hover:bg-gray-100"
                               }
