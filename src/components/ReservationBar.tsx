@@ -441,7 +441,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
         </div>
       </div>
       <button
-        onClick={() => {
+        onClick={async () => {
           if (
             !personalDetails.name ||
             !personalDetails.phone ||
@@ -454,13 +454,31 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             alert("Please select your check-in and check-out dates");
             return;
           }
-          // Here you can implement the actual booking submission
-          alert(
-            `Booking submitted!\n\nGuest: ${
-              personalDetails.name
-            }\nDates: ${formatDateRange()}\nGuests: ${guestCount}`
-          );
-          onSubmitSuccess();
+          // Make the API call to submit the reservation
+          try {
+            const response = await fetch('http://localhost:3005/dev/reservation-enquiry', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': 'abc123'
+              },
+              body: JSON.stringify({
+                name: personalDetails.name,
+                phone: personalDetails.phone,
+                dateFrom: selectedDates.checkIn.toISOString().split('T')[0],
+                dateTo: selectedDates.checkOut.toISOString().split('T')[0],
+                guestCount: guestCount
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to submit reservation');
+            }
+
+            onSubmitSuccess();
+          } catch (error) {
+            alert('Error submitting reservation. Please try again.');
+          }
         }}
         className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
         aria-label="Book Now"
