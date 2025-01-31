@@ -73,11 +73,13 @@ const ReservationBar = ({ onSubmitSuccess }) => {
 
   const handleDateSelect = (date) => {
     if (!selectedDates.checkIn || (selectedDates.checkIn && selectedDates.checkOut)) {
-      // Start new selection
-      setSelectedDates({
-        checkIn: date,
-        checkOut: null
-      });
+      if (!isDateBlocked(date)) {
+        // Start new selection
+        setSelectedDates({
+          checkIn: date,
+          checkOut: null
+        });
+      }
     } else {
       // Complete the selection
       if (date <= selectedDates.checkIn) {
