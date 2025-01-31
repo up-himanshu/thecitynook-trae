@@ -189,15 +189,25 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     return "Name and contact details";
   };
 
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const reservationBarRef = useRef(null);
+
+  const scrollToNotification = () => {
+    if (reservationBarRef.current) {
+      reservationBarRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <div
-      className="relative -mt-[138px] mx-auto w-7/12 bg-white rounded-lg shadow-lg p-6 flex items-center justify-between gap-4"
+      ref={reservationBarRef}
+      className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-white rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
       style={{ zIndex: 50 }}
     >
-      <div className="flex items-center gap-2 flex-1 border-r border-gray-200 pr-4 relative">
+      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-400"
+          className="h-5 w-5 text-gray-400 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -274,10 +284,10 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           </div>
         )}
       </div>
-      <div className="flex items-center gap-2 flex-1 border-r border-gray-200 pr-4 relative">
+      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-400"
+          className="h-5 w-5 text-gray-400 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -304,10 +314,10 @@ const ReservationBar = ({ onSubmitSuccess }) => {
         {showCalendar && (
           <div
             ref={calendarRef}
-            className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-8"
-            style={{ width: "800px", marginLeft: "-250px", zIndex: 9999 }}
+            className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 md:p-8 overflow-x-auto"
+            style={{ width: "calc(100vw - 32px)", maxWidth: "800px", marginLeft: "-16px", zIndex: 9999 }}
           >
-            <div className="grid grid-cols-2 gap-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
               {[0, 1].map((monthOffset) => {
                 const today = new Date();
                 const currentDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
@@ -477,16 +487,37 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               throw new Error('Failed to submit reservation');
             }
 
+            setShowSuccessNotification(true);
+            scrollToNotification();
             onSubmitSuccess();
           } catch (error) {
             alert('Error submitting reservation. Please try again.');
           }
         }}
-        className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
+        className="w-full md:w-auto ml-0 md:ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
         aria-label="Book Now"
       >
         <FaArrowRight className="w-5 h-5" />
       </button>
+      {showSuccessNotification && (
+        <div 
+          className="absolute left-0 right-0 -bottom-20 transform translate-y-full bg-green-50 text-green-800 px-4 py-3 rounded-lg shadow-md transition-all duration-300 ease-in-out animate-slide-up"
+          style={{ zIndex: 49 }}
+        >
+          <div className="flex justify-between items-center">
+            <p className="text-sm">Your reservation request has been submitted. We will call you back soon to proceed further.</p>
+            <button
+              onClick={() => setShowSuccessNotification(false)}
+              className="text-green-600 hover:text-green-800 focus:outline-none ml-4"
+              aria-label="Close notification"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
