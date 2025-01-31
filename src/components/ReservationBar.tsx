@@ -13,6 +13,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   });
   const [guestCount, setGuestCount] = useState(1);
   const [showGuestSelector, setShowGuestSelector] = useState(false);
+  const [blockedDates, setBlockedDates] = useState([]);
   const guestSelectorRef = useRef(null);
   const calendarRef = useRef(null);
   const personalDetailsRef = useRef(null);
@@ -22,35 +23,86 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   });
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target) &&
-        !event.target.closest(".calendar-trigger")
-      ) {
-        setShowCalendar(false);
-      }
-      if (
-        personalDetailsRef.current &&
-        !personalDetailsRef.current.contains(event.target) &&
-        !event.target.closest(".personal-details-trigger")
-      ) {
-        setShowPersonalDetails(false);
-      }
-      if (
-        guestSelectorRef.current &&
-        !guestSelectorRef.current.contains(event.target) &&
-        !event.target.closest(".guest-selector-trigger")
-      ) {
-        setShowGuestSelector(false);
+    const fetchBlockedDates = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/dev/available-dates', {
+          headers: {
+            'x-api-key': 'abc123'
+          }
+        });
+        const data = await response.json();
+        setBlockedDates(data.blockedDates.map(date => new Date(date)));
+      } catch (error) {
+        console.error('Error fetching blocked dates:', error);
       }
     };
 
+    fetchBlockedDates();
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target) &&
+      !event.target.closest(".calendar-trigger")
+    ) {
+      setShowCalendar(false);
+    }
+    if (
+      personalDetailsRef.current &&
+      !personalDetailsRef.current.contains(event.target) &&
+      !event.target.closest(".personal-details-trigger")
+    ) {
+      setShowPersonalDetails(false);
+    }
+    if (
+      guestSelectorRef.current &&
+      !guestSelectorRef.current.contains(event.target) &&
+      !event.target.closest(".guest-selector-trigger")
+    ) {
+      setShowGuestSelector(false);
+    }
+  };
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleDateSelect = (date) => {
+    if (!selectedDates.checkIn || (selectedDates.checkIn && selectedDates.checkOut)) {
+      // Start new selection
+      setSelectedDates({
+        checkIn: date,
+        checkOut: null
+      });
+    } else {
+      // Complete the selection
+      if (date <= selectedDates.checkIn) {
+        // If selected date is before or equal to check-in, start new selection
+        setSelectedDates({
+          checkIn: date,
+          checkOut: null
+        });
+      } else {
+        // Get the next blocked date after check-in
+        const nextBlockedDate = getNextBlockedDate(selectedDates.checkIn);
+        
+        // Allow selection up to and including the next blocked date
+        if (nextBlockedDate && date > nextBlockedDate) {
+          return; // Don't allow selection beyond next blocked date
+        }
+        
+        setSelectedDates(prev => ({
+          ...prev,
+          checkOut: date
+        }));
+        setShowCalendar(false);
+      }
+    }
+  };
 
   const handleDateClick = () => {
     setShowCalendar(!showCalendar);
@@ -72,28 +124,51 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     setShowPersonalDetails(false);
   };
 
-  const handleDateSelect = (date) => {
-    if (
-      !selectedDates.checkIn ||
-      (selectedDates.checkIn && selectedDates.checkOut)
-    ) {
-      setSelectedDates({
-        checkIn: date,
-        checkOut: null,
-      });
-    } else {
-      if (date > selectedDates.checkIn) {
-        setSelectedDates((prev) => ({
-          ...prev,
-          checkOut: date,
-        }));
-        setShowCalendar(false);
-      }
+  const isDateBlocked = (date) => {
+    return blockedDates.some(blockedDate => 
+      blockedDate.getFullYear() === date.getFullYear() &&
+      blockedDate.getMonth() === date.getMonth() &&
+      blockedDate.getDate() === date.getDate()
+    );
+  };
+
+  const isRangeValid = (startDate, endDate) => {
+    if (!startDate || !endDate) return true;
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+      if (isDateBlocked(date)) return false;
     }
+    
+    return true;
+  };
+
+  const getNextBlockedDate = (startDate) => {
+    const sortedBlockedDates = blockedDates
+      .filter(date => date > startDate)
+      .sort((a, b) => a.getTime() - b.getTime());
+    return sortedBlockedDates[0];
+  };
+
+  const isDateSelectable = (date) => {
+    if (!selectedDates.checkIn) return !isPastDate(date) && !isDateBlocked(date);
+    
+    // If it's the next day after check-in, allow it even if blocked
+    const isNextDay = new Date(date.getTime() - 24 * 60 * 60 * 1000).getTime() === selectedDates.checkIn.getTime();
+    if (isNextDay) return true;
+    
+    // Otherwise, keep the original logic for other dates
+    return date > selectedDates.checkIn && !isDateBlocked(date);
+  };
+
+  const isPastDate = (date) => {
+    return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
 
   const formatDateRange = () => {
-    if (!selectedDates.checkIn) return "Feb 06 - Feb 23";
+    if (!selectedDates.checkIn) return "Select dates";
     const formatDate = (date) => {
       return date.toLocaleDateString("en-US", {
         month: "short",
@@ -232,9 +307,8 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           >
             <div className="grid grid-cols-2 gap-16">
               {[0, 1].map((monthOffset) => {
-                const currentDate = new Date();
-                const currentMonth = currentDate.getMonth();
-                currentDate.setMonth(currentMonth + monthOffset);
+                const today = new Date();
+                const currentDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
                 const month = currentDate.toLocaleString("default", {
                   month: "long",
                 });
@@ -287,21 +361,21 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                           date < selectedDates.checkOut;
                         const isPast =
                           date < new Date(new Date().setHours(0, 0, 0, 0));
+                        const isBlocked = isDateBlocked(date);
+                        const isSelectable = isDateSelectable(date);
 
                         return (
                           <div
                             key={index}
-                            onClick={() => !isPast && handleDateSelect(date)}
+                            onClick={() => isSelectable && handleDateSelect(date)}
                             className={`
                               text-center py-2 text-sm rounded-full cursor-pointer w-10 h-10 flex items-center justify-center mx-auto
                               ${
-                                isPast
-                                  ? "text-gray-300 cursor-not-allowed"
-                                  : isSelected
-                                  ? "bg-blue-500 text-white"
-                                  : isInRange
-                                  ? "bg-blue-100"
-                                  : "hover:bg-gray-100"
+                                isPast || (!isSelectable && !isBlocked) ? "text-gray-400 cursor-not-allowed" 
+                                : isBlocked ? "bg-red-100 text-red-600 cursor-not-allowed"
+                                : isSelected ? "bg-blue-500 text-white"
+                                : isInRange ? "bg-blue-100"
+                                : "hover:bg-gray-100"
                               }
                             `}
                           >
@@ -374,7 +448,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             !personalDetails.phone ||
             !personalDetails.email
           ) {
-            alert("Please fill in your personal details");
+            alert("Please fill in reservation details");
             return;
           }
           if (!selectedDates.checkIn || !selectedDates.checkOut) {
