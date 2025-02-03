@@ -13,7 +13,7 @@ const PhotoGallery = () => {
     { src: "/images/9.JPG", alt: "Property view 9" },
     { src: "/images/10.JPG", alt: "Property view 10" },
     { src: "/images/11.JPG", alt: "Property view 10" },
-    { src: "/images/12.JPG", alt: "Property view 10" },
+    { src: "/images/12.jpg", alt: "Property view 10" },
     { src: "/images/13.JPG", alt: "Property view 10" },
   ];
 

@@ -4,11 +4,16 @@ import { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
+const API_BASE_URL = "https://10o6fcnt7b.execute-api.us-east-1.amazonaws.com";
+const API_STAGE = "prod";
 
 declare global {
   interface Window {
     grecaptcha: {
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      execute: (
+        siteKey: string,
+        options: { action: string }
+      ) => Promise<string>;
     };
   }
 }
@@ -17,7 +22,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   // Load reCAPTCHA script
   useEffect(() => {
     const loadRecaptcha = () => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
       script.async = true;
       script.defer = true;
@@ -26,9 +31,9 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     loadRecaptcha();
     return () => {
       // Cleanup reCAPTCHA script on component unmount
-      const scripts = document.getElementsByTagName('script');
+      const scripts = document.getElementsByTagName("script");
       for (let script of scripts) {
-        if (script.src.includes('recaptcha')) {
+        if (script.src.includes("recaptcha")) {
           document.head.removeChild(script);
         }
       }
@@ -37,11 +42,13 @@ const ReservationBar = ({ onSubmitSuccess }) => {
 
   const executeRecaptcha = async () => {
     try {
-      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'reservation_submit' });
+      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {
+        action: "reservation_submit",
+      });
       return token;
     } catch (error) {
-      console.error('Error executing reCAPTCHA:', error);
-      throw new Error('Failed to verify reCAPTCHA');
+      console.error("Error executing reCAPTCHA:", error);
+      throw new Error("Failed to verify reCAPTCHA");
     }
   };
   const [showCalendar, setShowCalendar] = useState(false);
@@ -66,7 +73,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     const fetchBlockedDates = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3005/dev/available-dates",
+          `${API_BASE_URL}/${API_STAGE}/available-dates`,
           {
             headers: {
               "x-api-key": "abc123",
@@ -558,9 +565,9 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               guestCount: guestCount,
               recaptchaToken,
             };
-            console.log("reqBody", reqBody)
+            console.log("reqBody", reqBody);
             const response = await fetch(
-              "http://localhost:3005/dev/reservation-enquiry",
+              `${API_BASE_URL}/${API_STAGE}/reservation-enquiry`,
               {
                 method: "POST",
                 headers: {
