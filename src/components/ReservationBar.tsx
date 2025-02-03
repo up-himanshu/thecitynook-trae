@@ -3,7 +3,47 @@
 import { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
+const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
 const ReservationBar = ({ onSubmitSuccess }) => {
+  // Load reCAPTCHA script
+  useEffect(() => {
+    const loadRecaptcha = () => {
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    };
+    loadRecaptcha();
+    return () => {
+      // Cleanup reCAPTCHA script on component unmount
+      const scripts = document.getElementsByTagName('script');
+      for (let script of scripts) {
+        if (script.src.includes('recaptcha')) {
+          document.head.removeChild(script);
+        }
+      }
+    };
+  }, []);
+
+  const executeRecaptcha = async () => {
+    try {
+      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'reservation_submit' });
+      return token;
+    } catch (error) {
+      console.error('Error executing reCAPTCHA:', error);
+      throw new Error('Failed to verify reCAPTCHA');
+    }
+  };
   const [showCalendar, setShowCalendar] = useState(false);
   const [showPersonalDetails, setShowPersonalDetails] = useState(false);
   const [personalDetails, setPersonalDetails] = useState({
@@ -11,7 +51,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     phone: "",
     email: "",
   });
-  const [guestCount, setGuestCount] = useState(1);
+  const [guestCount, setGuestCount] = useState(2);
   const [showGuestSelector, setShowGuestSelector] = useState(false);
   const [blockedDates, setBlockedDates] = useState([]);
   const guestSelectorRef = useRef(null);
@@ -25,15 +65,18 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   useEffect(() => {
     const fetchBlockedDates = async () => {
       try {
-        const response = await fetch('http://localhost:3005/dev/available-dates', {
-          headers: {
-            'x-api-key': 'abc123'
+        const response = await fetch(
+          "http://localhost:3005/dev/available-dates",
+          {
+            headers: {
+              "x-api-key": "abc123",
+            },
           }
-        });
+        );
         const data = await response.json();
-        setBlockedDates(data.blockedDates.map(date => new Date(date)));
+        setBlockedDates(data.blockedDates.map((date) => new Date(date)));
       } catch (error) {
-        console.error('Error fetching blocked dates:', error);
+        console.error("Error fetching blocked dates:", error);
       }
     };
 
@@ -72,34 +115,46 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   }, []);
 
   const handleDateSelect = (date) => {
-    if (!selectedDates.checkIn || (selectedDates.checkIn && selectedDates.checkOut)) {
+    console.log("case 0");
+    if (
+      !selectedDates.checkIn ||
+      (selectedDates.checkIn && selectedDates.checkOut)
+    ) {
+      console.log("case 1");
       if (!isDateBlocked(date)) {
+        console.log("case 1.1");
         // Start new selection
         setSelectedDates({
           checkIn: date,
-          checkOut: null
+          checkOut: null,
         });
+        const nextBlockedDate1 = getNextBlockedDate(selectedDates.checkIn);
+        console.log("nextBlockedDate1", nextBlockedDate1);
       }
     } else {
       // Complete the selection
+      console.log("case 2");
       if (date <= selectedDates.checkIn) {
+        console.log("case 2.1");
         // If selected date is before or equal to check-in, start new selection
         setSelectedDates({
           checkIn: date,
-          checkOut: null
+          checkOut: null,
         });
       } else {
+        console.log("case 2.2");
         // Get the next blocked date after check-in
         const nextBlockedDate = getNextBlockedDate(selectedDates.checkIn);
-        
+
         // Allow selection up to and including the next blocked date
         if (nextBlockedDate && date > nextBlockedDate) {
+          console.log("case 2.2.1");
           return; // Don't allow selection beyond next blocked date
         }
-        
-        setSelectedDates(prev => ({
+
+        setSelectedDates((prev) => ({
           ...prev,
-          checkOut: date
+          checkOut: date,
         }));
         setShowCalendar(false);
       }
@@ -127,40 +182,48 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   };
 
   const isDateBlocked = (date) => {
-    return blockedDates.some(blockedDate => 
-      blockedDate.getFullYear() === date.getFullYear() &&
-      blockedDate.getMonth() === date.getMonth() &&
-      blockedDate.getDate() === date.getDate()
+    return blockedDates.some(
+      (blockedDate) =>
+        blockedDate.getFullYear() === date.getFullYear() &&
+        blockedDate.getMonth() === date.getMonth() &&
+        blockedDate.getDate() === date.getDate()
     );
   };
 
   const isRangeValid = (startDate, endDate) => {
     if (!startDate || !endDate) return true;
-    
+
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
-    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+
+    for (
+      let date = new Date(start);
+      date <= end;
+      date.setDate(date.getDate() + 1)
+    ) {
       if (isDateBlocked(date)) return false;
     }
-    
+
     return true;
   };
 
   const getNextBlockedDate = (startDate) => {
     const sortedBlockedDates = blockedDates
-      .filter(date => date > startDate)
+      .filter((date) => date > startDate)
       .sort((a, b) => a.getTime() - b.getTime());
     return sortedBlockedDates[0];
   };
 
   const isDateSelectable = (date) => {
-    if (!selectedDates.checkIn) return !isPastDate(date) && !isDateBlocked(date);
-    
+    if (!selectedDates.checkIn)
+      return !isPastDate(date) && !isDateBlocked(date);
+
     // If it's the next day after check-in, allow it even if blocked
-    const isNextDay = new Date(date.getTime() - 24 * 60 * 60 * 1000).getTime() === selectedDates.checkIn.getTime();
+    const isNextDay =
+      new Date(date.getTime() - 24 * 60 * 60 * 1000).getTime() ===
+      selectedDates.checkIn.getTime();
     if (isNextDay) return true;
-    
+
     // Otherwise, keep the original logic for other dates
     return date > selectedDates.checkIn && !isDateBlocked(date);
   };
@@ -194,7 +257,10 @@ const ReservationBar = ({ onSubmitSuccess }) => {
 
   const scrollToNotification = () => {
     if (reservationBarRef.current) {
-      reservationBarRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      reservationBarRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   };
 
@@ -315,12 +381,21 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           <div
             ref={calendarRef}
             className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 md:p-8 overflow-x-auto"
-            style={{ width: "calc(100vw - 32px)", maxWidth: "800px", marginLeft: "-16px", zIndex: 9999 }}
+            style={{
+              width: "calc(100vw - 32px)",
+              maxWidth: "800px",
+              marginLeft: "-16px",
+              zIndex: 9999,
+            }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
               {[0, 1].map((monthOffset) => {
                 const today = new Date();
-                const currentDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+                const currentDate = new Date(
+                  today.getFullYear(),
+                  today.getMonth() + monthOffset,
+                  1
+                );
                 const month = currentDate.toLocaleString("default", {
                   month: "long",
                 });
@@ -379,14 +454,19 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                         return (
                           <div
                             key={index}
-                            onClick={() => isSelectable && handleDateSelect(date)}
+                            onClick={() => handleDateSelect(date)}
                             className={`
                               text-center py-2 text-sm rounded-full cursor-pointer w-10 h-10 flex items-center justify-center mx-auto
-                              ${isSelected ? "bg-blue-500 text-white"
-                                : isPast || (!isSelectable && !isBlocked) ? "text-gray-400 cursor-not-allowed" 
-                                : isBlocked ? "bg-red-100 text-red-600 cursor-not-allowed"
-                                : isInRange ? "bg-blue-100"
-                                : "hover:bg-gray-100"
+                              ${
+                                isSelected
+                                  ? "bg-blue-500 text-white"
+                                  : isPast || (!isSelectable && !isBlocked)
+                                  ? "text-gray-400 cursor-not-allowed"
+                                  : isBlocked
+                                  ? "bg-red-100 text-red-600 cursor-not-allowed"
+                                  : isInRange
+                                  ? "bg-blue-100"
+                                  : "hover:bg-gray-100"
                               }
                             `}
                           >
@@ -468,30 +548,38 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           }
           // Make the API call to submit the reservation
           try {
-            const response = await fetch('http://localhost:3005/dev/reservation-enquiry', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': 'abc123'
-              },
-              body: JSON.stringify({
-                name: personalDetails.name,
-                phone: personalDetails.phone,
-                dateFrom: selectedDates.checkIn.toISOString().split('T')[0],
-                dateTo: selectedDates.checkOut.toISOString().split('T')[0],
-                guestCount: guestCount
-              })
-            });
+            const recaptchaToken = await executeRecaptcha();
+            const reqBody = {
+              name: personalDetails.name,
+              phone: personalDetails.phone,
+              email: personalDetails.email,
+              dateFrom: selectedDates.checkIn.toISOString().split("T")[0],
+              dateTo: selectedDates.checkOut.toISOString().split("T")[0],
+              guestCount: guestCount,
+              recaptchaToken,
+            };
+            console.log("reqBody", reqBody)
+            const response = await fetch(
+              "http://localhost:3005/dev/reservation-enquiry",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-api-key": "abc123",
+                },
+                body: JSON.stringify(reqBody),
+              }
+            );
 
             if (!response.ok) {
-              throw new Error('Failed to submit reservation');
+              throw new Error("Failed to submit reservation");
             }
 
             setShowSuccessNotification(true);
             scrollToNotification();
             onSubmitSuccess();
           } catch (error) {
-            alert('Error submitting reservation. Please try again.');
+            alert(error.message);
           }
         }}
         className="w-full md:w-auto ml-0 md:ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
@@ -500,19 +588,32 @@ const ReservationBar = ({ onSubmitSuccess }) => {
         <FaArrowRight className="w-5 h-5" />
       </button>
       {showSuccessNotification && (
-        <div 
+        <div
           className="absolute left-0 right-0 -bottom-20 transform translate-y-full bg-green-50 text-green-800 px-4 py-3 rounded-lg shadow-md transition-all duration-300 ease-in-out animate-slide-up"
           style={{ zIndex: 49 }}
         >
-          <div className="flex justify-between items-center">
-            <p className="text-sm">Your reservation request has been submitted. We will call you back soon to proceed further.</p>
+          <div className="flex justify-between items-center bg-green">
+            <p className="text-sm">
+              Your reservation request has been submitted. We will call you back
+              soon to proceed further.
+            </p>
             <button
               onClick={() => setShowSuccessNotification(false)}
               className="text-green-600 hover:text-green-800 focus:outline-none ml-4"
               aria-label="Close notification"
             >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
