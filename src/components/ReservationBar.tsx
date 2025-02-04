@@ -76,7 +76,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           `${API_BASE_URL}/${API_STAGE}/available-dates`,
           {
             headers: {
-              "x-api-key": "abc123",
+              "key": "abc123",
             },
           }
         );
@@ -572,7 +572,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "x-api-key": "abc123",
+                  "key": "abc123",
                 },
                 body: JSON.stringify(reqBody),
               }
