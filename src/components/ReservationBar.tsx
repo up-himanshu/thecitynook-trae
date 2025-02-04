@@ -5,6 +5,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
 const API_BASE_URL = "https://cnbc1msz45.execute-api.us-east-1.amazonaws.com";
+// const API_BASE_URL = "http://localhost:3005";
 
 declare global {
   interface Window {
@@ -71,16 +72,13 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   useEffect(() => {
     const fetchBlockedDates = async () => {
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/available-dates`,
-          {
-            headers: {
-              "key": "abc123",
-            },
-          }
-        );
+        const response = await fetch(`${API_BASE_URL}/available-dates`, {
+          headers: {
+            key: "abc123",
+          },
+        });
         const data = await response.json();
-        setBlockedDates(data.blockedDates.map((date) => new Date(date)));
+        setBlockedDates(data.data.blockedDates.map((date) => new Date(date)));
       } catch (error) {
         console.error("Error fetching blocked dates:", error);
       }
@@ -555,12 +553,21 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           // Make the API call to submit the reservation
           try {
             const recaptchaToken = await executeRecaptcha();
+            console.log("selectedDates", selectedDates.checkIn);
             const reqBody = {
               name: personalDetails.name,
               phone: personalDetails.phone,
               email: personalDetails.email,
-              dateFrom: selectedDates.checkIn.toISOString().split("T")[0],
-              dateTo: selectedDates.checkOut.toISOString().split("T")[0],
+              dateFrom: `${selectedDates.checkIn.getFullYear()}-${String(
+                selectedDates.checkIn.getMonth() + 1
+              ).padStart(2, "0")}-${String(
+                selectedDates.checkIn.getDate()
+              ).padStart(2, "0")}`,
+              dateTo: `${selectedDates.checkOut.getFullYear()}-${String(
+                selectedDates.checkOut.getMonth() + 1
+              ).padStart(2, "0")}-${String(
+                selectedDates.checkOut.getDate()
+              ).padStart(2, "0")}`,
               guestCount: guestCount,
               recaptchaToken,
             };
@@ -571,7 +578,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  "key": "abc123",
+                  key: "abc123",
                 },
                 body: JSON.stringify(reqBody),
               }
