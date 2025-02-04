@@ -4,8 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
-const API_BASE_URL = "https://10o6fcnt7b.execute-api.us-east-1.amazonaws.com";
-const API_STAGE = "prod";
+const API_BASE_URL = "https://cnbc1msz45.execute-api.us-east-1.amazonaws.com";
 
 declare global {
   interface Window {
@@ -73,7 +72,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     const fetchBlockedDates = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/${API_STAGE}/available-dates`,
+          `${API_BASE_URL}/available-dates`,
           {
             headers: {
               "key": "abc123",
@@ -567,7 +566,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             };
             console.log("reqBody", reqBody);
             const response = await fetch(
-              `${API_BASE_URL}/${API_STAGE}/reservation-enquiry`,
+              `${API_BASE_URL}/reservation-enquiry`,
               {
                 method: "POST",
                 headers: {
