@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from 'next/script';
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "The City Nook - Your Urban Retreat",
-  description: "Find and book unique urban properties for your perfect city getaway",
+  description: "Book unique urban retreat for your perfect city getaway",
 };
 
 export default function RootLayout({
@@ -38,6 +38,21 @@ export default function RootLayout({
             gtag('config', 'G-QPKHM1E2R3');
           `}
         </Script>
+        <meta
+          property="og:title"
+          content="The City Nook - Your Urban Retreat in Jaipur"
+        />
+        <meta property="og:site_name" content="The City Nook" />
+        <meta property="og:url" content="https://thecitynook.com" />
+        <meta
+          property="og:description"
+          content="Experience luxury stays in Jagatpura, Jaipur. Modern amenities, stunning views, and exceptional hospitality at The City Nook."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://thecitynook.com/images/2.JPG"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
