@@ -119,40 +119,43 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   }, []);
 
   const handleDateSelect = (date) => {
-    console.log("case 0");
+    // console.log("handleDateSelect date", date);
+    // console.log("case 0");
     if (
       !selectedDates.checkIn ||
       (selectedDates.checkIn && selectedDates.checkOut)
     ) {
-      console.log("case 1");
-      if (!isDateBlocked(date)) {
-        console.log("case 1.1");
+      // console.log("case 1");
+      if (!isDateBlocked(date) && !isPastDate(date)) {
+        // console.log("case 1.1");
         // Start new selection
         setSelectedDates({
           checkIn: date,
           checkOut: null,
         });
-        const nextBlockedDate1 = getNextBlockedDate(selectedDates.checkIn);
-        console.log("nextBlockedDate1", nextBlockedDate1);
+        // const nextBlockedDate1 = getNextBlockedDate(selectedDates.checkIn);
+        // console.log("nextBlockedDate1", nextBlockedDate1);
       }
     } else {
       // Complete the selection
-      console.log("case 2");
-      if (date <= selectedDates.checkIn) {
-        console.log("case 2.1");
+      // console.log("case 2");
+      if (isPastDate(date)) return;
+      if (date <= selectedDates.checkIn && !isDateBlocked(date)) {
+        // console.log("case 2.1");
         // If selected date is before or equal to check-in, start new selection
         setSelectedDates({
           checkIn: date,
           checkOut: null,
         });
       } else {
-        console.log("case 2.2");
+        if (date <= selectedDates.checkIn) return;
+        // console.log("case 2.2");
         // Get the next blocked date after check-in
         const nextBlockedDate = getNextBlockedDate(selectedDates.checkIn);
 
         // Allow selection up to and including the next blocked date
         if (nextBlockedDate && date > nextBlockedDate) {
-          console.log("case 2.2.1");
+          // console.log("case 2.2.1");
           return; // Don't allow selection beyond next blocked date
         }
 
