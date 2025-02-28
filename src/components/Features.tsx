@@ -1,6 +1,6 @@
 'use client';
 
-import { FaWifi, FaTv, FaBuilding, FaSnowflake, FaShower, FaLaptop, FaMoon, FaTshirt, FaRegSnowflake, FaUtensils, FaBreadSlice, FaDoorOpen, FaParking, FaKey, FaHeart, FaUsers } from 'react-icons/fa';
+import { FaWifi, FaTv, FaBuilding, FaSnowflake, FaShower, FaLaptop, FaMoon, FaTshirt, FaRegSnowflake, FaUtensils, FaBreadSlice, FaDoorOpen, FaParking, FaKey, FaHeart, FaUsers, FaIdCard } from 'react-icons/fa';
 import { FaKitchenSet } from 'react-icons/fa6';
 
 const features = [
@@ -21,6 +21,7 @@ const features = [
     { name: 'Self check-in', icon: FaKey },
     { name: 'Couple Friendly', icon: FaHeart },
     { name: 'Unmarried Couples Welcome', icon: FaUsers },
+    { name: 'Local IDs Allowed', icon: FaIdCard },
 ];
 
 const Features = () => {
