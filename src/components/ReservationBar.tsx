@@ -129,6 +129,11 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       if (!isDateBlocked(date) && !isPastDate(date)) {
         // console.log("case 1.1");
         // Start new selection
+        if (window.gtag)
+          window.gtag("event", "checkin_date_selected", {
+            event_category: "Booking",
+            event_label: "Checkin date selected",
+          });
         setSelectedDates({
           checkIn: date,
           checkOut: null,
@@ -159,6 +164,12 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           return; // Don't allow selection beyond next blocked date
         }
 
+        if (window.gtag)
+          window.gtag("event", "checkout_date_selected", {
+            event_category: "Booking",
+            event_label: "Checkout date selected",
+          });
+
         setSelectedDates((prev) => ({
           ...prev,
           checkOut: date,
@@ -169,6 +180,17 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   };
 
   const handleDateClick = () => {
+    console.log("showCalendar", showCalendar);
+    if (window.gtag) {
+      if (!showCalendar) {
+        console.log("event fired");
+        window.gtag("event", "date_availability_opened", {
+          event_category: "Booking",
+          event_label: "Opened date availability",
+        });
+      }
+    }
+
     setShowCalendar(!showCalendar);
   };
 
