@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
 const API_BASE_URL = "https://cnbc1msz45.execute-api.us-east-1.amazonaws.com";
@@ -201,11 +203,61 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   const handlePersonalDetailsSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const details = {
-      name: formData.get("name"),
-      phone: formData.get("phone"),
-      email: formData.get("email"),
-    };
+    const name = formData.get("name");
+    const phone = formData.get("phone");
+    const email = formData.get("email");
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const allowedDomains = [
+      "@gmail",
+      "@yahoo",
+      "@hotmail",
+      "@outlook",
+      "@icloud",
+      "@aol",
+      "@msn",
+    ];
+
+    if (phone.length !== 10) {
+      toast.error("Phone number must be exactly 10 digits", {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+      return;
+    }
+
+    if (email) {
+      if (!emailRegex.test(email)) {
+        toast.error("Please enter a valid email address", {
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
+        return;
+      }
+      if (!allowedDomains.some((domain) => email.includes(domain))) {
+        toast.error(
+          "This email is not allowed. Either enter a different email or remove it.",
+          {
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          }
+        );
+        return;
+      }
+    }
+
+    const details = { name, phone, email };
     setPersonalDetails(details);
     setShowPersonalDetails(false);
   };
@@ -281,17 +333,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     return "Name and contact details";
   };
 
-  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const reservationBarRef = useRef(null);
-
-  const scrollToNotification = () => {
-    if (reservationBarRef.current) {
-      reservationBarRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  };
 
   return (
     <div
@@ -299,6 +341,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-white rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
       style={{ zIndex: 50 }}
     >
+      <ToastContainer />
       <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -353,6 +396,26 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                   type="tel"
                   name="phone"
                   required
+                  maxLength={10}
+                  onKeyPress={(e) => {
+                    if (
+                      !/[0-9]/.test(e.key) &&
+                      e.key !== "Backspace" &&
+                      e.key !== "Delete" &&
+                      e.key !== "ArrowLeft" &&
+                      e.key !== "ArrowRight"
+                    ) {
+                      e.preventDefault();
+                      toast.error("Please enter numbers only", {
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "colored",
+                      });
+                    }
+                  }}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   defaultValue={personalDetails.phone}
                 />
@@ -364,7 +427,6 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                 <input
                   type="email"
                   name="email"
-                  required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   defaultValue={personalDetails.email}
                 />
@@ -610,14 +672,37 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             );
 
             if (!response.ok) {
-              throw new Error("Failed to submit reservation");
+              toast.error("Failed to submit reservation", {
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+              });
+              return;
             }
 
-            setShowSuccessNotification(true);
+            toast.success("Reservation submitted successfully", {
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+            });
+
             scrollToNotification();
             onSubmitSuccess();
           } catch (error) {
-            alert(error.message);
+            toast.error(error.message, {
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+            });
           }
         }}
         className="w-full md:w-auto ml-0 md:ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center"
@@ -625,38 +710,6 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       >
         <FaArrowRight className="w-5 h-5" />
       </button>
-      {showSuccessNotification && (
-        <div
-          className="absolute left-0 right-0 -bottom-20 transform translate-y-full bg-green-50 text-green-800 px-4 py-3 rounded-lg shadow-md transition-all duration-300 ease-in-out animate-slide-up"
-          style={{ zIndex: 49 }}
-        >
-          <div className="flex justify-between items-center bg-green">
-            <p className="text-sm">
-              Your reservation request has been submitted. We will call you back
-              soon to proceed further.
-            </p>
-            <button
-              onClick={() => setShowSuccessNotification(false)}
-              className="text-green-600 hover:text-green-800 focus:outline-none ml-4"
-              aria-label="Close notification"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
