@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
@@ -22,6 +22,7 @@ declare global {
 
 const ReservationBar = ({ onSubmitSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successfulSubmissions, setSuccessfulSubmissions] = useState([]);
   // Load reCAPTCHA script
   useEffect(() => {
     const loadRecaptcha = () => {
@@ -183,10 +184,8 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   };
 
   const handleDateClick = () => {
-    console.log("showCalendar", showCalendar);
     if (window.gtag) {
       if (!showCalendar) {
-        console.log("event fired");
         window.gtag("event", "date_availability_opened", {
           event_category: "Booking",
           event_label: "Opened date availability",
@@ -342,15 +341,47 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       return;
     }
 
+    // Check for duplicate submission
+    const isDuplicate = successfulSubmissions.some(
+      (submission) =>
+        submission.name === personalDetails.name &&
+        submission.phone === personalDetails.phone &&
+        submission.email === personalDetails.email &&
+        submission.dateFrom ===
+          `${selectedDates.checkIn.getFullYear()}-${String(
+            selectedDates.checkIn.getMonth() + 1
+          ).padStart(2, "0")}-${String(
+            selectedDates.checkIn.getDate()
+          ).padStart(2, "0")}` &&
+        submission.dateTo ===
+          `${selectedDates.checkOut.getFullYear()}-${String(
+            selectedDates.checkOut.getMonth() + 1
+          ).padStart(2, "0")}-${String(
+            selectedDates.checkOut.getDate()
+          ).padStart(2, "0")}` &&
+        submission.guestCount === guestCount
+    );
+
+    if (isDuplicate) {
+      toast.error(
+        "You have already submitted a reservation with these exact details",
+        {
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        }
+      );
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const recaptchaToken = await executeRecaptcha();
-      console.log(
-        "selectedDates",
-        selectedDates.checkIn,
-        selectedDates.checkOut
-      );
+
       const reqBody = {
         name: personalDetails.name,
         phone: personalDetails.phone,
@@ -390,6 +421,19 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             event_label: "Reservation submitted successfully",
           });
 
+        // Store successful submission
+        setSuccessfulSubmissions((prev) => [
+          ...prev,
+          {
+            name: personalDetails.name,
+            phone: personalDetails.phone,
+            email: personalDetails.email,
+            dateFrom: reqBody.dateFrom,
+            dateTo: reqBody.dateTo,
+            guestCount: guestCount,
+          },
+        ]);
+
         toast.success(
           "Reservation enquiry sent! We'll call you back for next steps.",
           {
@@ -426,7 +470,6 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-white rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
       style={{ zIndex: 1 }}
     >
-      <ToastContainer />
       <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
