@@ -272,23 +272,6 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     );
   };
 
-  const isRangeValid = (startDate, endDate) => {
-    if (!startDate || !endDate) return true;
-
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    for (
-      let date = new Date(start);
-      date <= end;
-      date.setDate(date.getDate() + 1)
-    ) {
-      if (isDateBlocked(date)) return false;
-    }
-
-    return true;
-  };
-
   const getNextBlockedDate = (startDate) => {
     const sortedBlockedDates = blockedDates
       .filter((date) => date > startDate)
@@ -334,13 +317,114 @@ const ReservationBar = ({ onSubmitSuccess }) => {
     return "Name and contact details";
   };
 
-  const reservationBarRef = useRef(null);
+  const handleReservationFormSubmit = async () => {
+    if (!personalDetails.name || !personalDetails.phone) {
+      toast.error("Please fill in your personal details", {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+      return;
+    }
+
+    if (!selectedDates.checkIn || !selectedDates.checkOut) {
+      toast.error("Please select your check-in and check-out dates", {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const recaptchaToken = await executeRecaptcha();
+      console.log(
+        "selectedDates",
+        selectedDates.checkIn,
+        selectedDates.checkOut
+      );
+      const reqBody = {
+        name: personalDetails.name,
+        phone: personalDetails.phone,
+        email: personalDetails.email,
+        dateFrom: `${selectedDates.checkIn.getFullYear()}-${String(
+          selectedDates.checkIn.getMonth() + 1
+        ).padStart(2, "0")}-${String(selectedDates.checkIn.getDate()).padStart(
+          2,
+          "0"
+        )}`,
+        dateTo: `${selectedDates.checkOut.getFullYear()}-${String(
+          selectedDates.checkOut.getMonth() + 1
+        ).padStart(2, "0")}-${String(selectedDates.checkOut.getDate()).padStart(
+          2,
+          "0"
+        )}`,
+        guestCount: guestCount,
+        recaptchaToken,
+      };
+      console.log("reqBody", reqBody);
+
+      const response = await fetch(`${API_BASE_URL}/submit-reservation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          key: "abc123",
+        },
+        body: JSON.stringify(reqBody),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (window.gtag)
+          window.gtag("event", "reservation_submitted", {
+            event_category: "Booking",
+            event_label: "Reservation submitted successfully",
+          });
+
+        toast.success(
+          "Reservation enquiry sent! We'll call you back for next steps.",
+          {
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          }
+        );
+
+        onSubmitSuccess();
+      } else {
+        throw new Error(data.message || "Failed to submit reservation");
+      }
+    } catch (error) {
+      console.error("Error submitting reservation:", error);
+      toast.error(error.message || "Failed to submit reservation", {
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div
-      ref={reservationBarRef}
       className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-white rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
-      style={{ zIndex: 50 }}
+      style={{ zIndex: 1 }}
     >
       <ToastContainer />
       <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
@@ -625,97 +709,33 @@ const ReservationBar = ({ onSubmitSuccess }) => {
         </div>
       </div>
       <button
-        onClick={async () => {
-          if (
-            !personalDetails.name ||
-            !personalDetails.phone ||
-            !personalDetails.email
-          ) {
-            alert("Please fill in reservation details");
-            return;
-          }
-          if (!selectedDates.checkIn || !selectedDates.checkOut) {
-            alert("Please select your check-in and check-out dates");
-            return;
-          }
-          setIsSubmitting(true);
-          // Make the API call to submit the reservation
-          try {
-            const recaptchaToken = await executeRecaptcha();
-            console.log("selectedDates", selectedDates.checkIn);
-            const reqBody = {
-              name: personalDetails.name,
-              phone: personalDetails.phone,
-              email: personalDetails.email,
-              dateFrom: `${selectedDates.checkIn.getFullYear()}-${String(
-                selectedDates.checkIn.getMonth() + 1
-              ).padStart(2, "0")}-${String(
-                selectedDates.checkIn.getDate()
-              ).padStart(2, "0")}`,
-              dateTo: `${selectedDates.checkOut.getFullYear()}-${String(
-                selectedDates.checkOut.getMonth() + 1
-              ).padStart(2, "0")}-${String(
-                selectedDates.checkOut.getDate()
-              ).padStart(2, "0")}`,
-              guestCount: guestCount,
-              recaptchaToken,
-            };
-            console.log("reqBody", reqBody);
-            const response = await fetch(
-              `${API_BASE_URL}/reservation-enquiry`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  key: "abc123",
-                },
-                body: JSON.stringify(reqBody),
-              }
-            );
-
-            if (!response.ok) {
-              toast.error("Failed to submit reservation", {
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "colored",
-              });
-              return;
-            }
-
-            toast.success("Reservation submitted successfully", {
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "colored",
-            });
-
-            onSubmitSuccess();
-          } catch (error) {
-            toast.error(error.message, {
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "colored",
-            });
-          } finally {
-            setIsSubmitting(false);
-          }
-        }}
+        onClick={handleReservationFormSubmit}
         disabled={isSubmitting}
-        className={`w-full md:w-auto ml-0 md:ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+        className={`w-full md:w-auto ml-0 md:ml-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium flex items-center justify-center ${
+          isSubmitting ? "opacity-75 cursor-not-allowed" : ""
+        }`}
         aria-label="Book Now"
       >
         {isSubmitting ? (
-          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <svg
+            className="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
           </svg>
         ) : (
           <FaArrowRight className="w-5 h-5" />
