@@ -1,9 +1,9 @@
 import Image from "next/image";
 import {
   FaFacebook,
-  FaTwitter,
   FaInstagram,
   FaMapMarkerAlt,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -29,6 +29,11 @@ const Footer = () => {
         icon: FaInstagram,
         link: "https://www.instagram.com/the.city.nook/",
         label: "Instagram",
+      },
+      {
+        icon: FaWhatsapp,
+        link: "https://wa.me/919782001181",
+        label: "WhatsApp",
       },
     ],
   };

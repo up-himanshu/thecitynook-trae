@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from 'react';
+import { useState } from "react";
+import { FaWhatsappSquare } from "react-icons/fa";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,11 +28,34 @@ const Navigation = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            <a href="#property-features" className="text-gray-900 hover:text-gray-600">About</a>
-            <a href="#gallery" className="text-gray-900 hover:text-gray-600">Gallery</a>
-            <a href="#testimonials" className="text-gray-900 hover:text-gray-600">Testimonials</a>
-            <a href="#contact" className="text-gray-900 hover:text-gray-600">Contact</a>
+          <div className="hidden md:flex items-center space-x-8">
+            <a
+              href="#property-features"
+              className="text-gray-900 hover:text-gray-600"
+            >
+              About
+            </a>
+            <a href="#gallery" className="text-gray-900 hover:text-gray-600">
+              Gallery
+            </a>
+            <a
+              href="#testimonials"
+              className="text-gray-900 hover:text-gray-600"
+            >
+              Testimonials
+            </a>
+            <a href="#contact" className="text-gray-900 hover:text-gray-600">
+              Contact
+            </a>
+            <a
+              href="https://wa.me/919782001181"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+              aria-label="Chat on WhatsApp"
+            >
+              <FaWhatsappSquare className="w-6 h-6" />
+            </a>
           </div>
 
           {/* Hamburger Button */}
@@ -69,8 +93,8 @@ const Navigation = () => {
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
             isMenuOpen
-              ? 'max-h-64 opacity-100 visible'
-              : 'max-h-0 opacity-0 invisible'
+              ? "max-h-64 opacity-100 visible"
+              : "max-h-0 opacity-0 invisible"
           }`}
         >
           <div className="py-2 space-y-1">
@@ -101,6 +125,16 @@ const Navigation = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
+            </a>
+            <a
+              href="https://wa.me/919782001181"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center px-4 py-2 text-green-600 hover:bg-gray-100 rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <FaWhatsappSquare className="w-6 h-6 mr-2" />
+              Chat on WhatsApp
             </a>
           </div>
         </div>
