@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
+import VideoModal from "./VideoModal";
 
 const Hero = () => {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   return (
     <article className="hero-section" itemScope itemType="https://schema.org/LodgingBusiness">
       <div className="text-center mb-8">
@@ -13,8 +16,9 @@ const Hero = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 relative">
+        <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
         <div
-          className="relative h-[460px] rounded-lg overflow-hidden"
+          className="relative h-[460px] rounded-lg overflow-hidden cursor-pointer"
           style={{ position: "relative" }}
         >
           <Image
@@ -24,6 +28,7 @@ const Hero = () => {
             className="object-cover"
             priority
             itemProp="image"
+            onClick={() => setIsVideoModalOpen(true)}
           />
         </div>
         <div
@@ -36,6 +41,7 @@ const Hero = () => {
               alt="Elegant Living Room at The City Nook - Comfortable Seating Area with Modern Decor"
               fill
               className="object-cover"
+              onClick={() => setIsVideoModalOpen(true)}
             />
           </div>
           <div className="relative h-[210px] rounded-lg overflow-hidden">
@@ -44,6 +50,7 @@ const Hero = () => {
               alt="Exterior View of The City Nook - Modern Residential Building in Jagatpura, Jaipur"
               fill
               className="object-cover"
+              onClick={() => setIsVideoModalOpen(true)}
             />
           </div>
           <div className="relative h-[210px] rounded-lg overflow-hidden">
@@ -52,6 +59,7 @@ const Hero = () => {
               alt="Cozy Bedroom at The City Nook - Comfortable Double Bed with Quality Linens"
               fill
               className="object-cover"
+              onClick={() => setIsVideoModalOpen(true)}
             />
           </div>
           <div className="relative h-[210px] rounded-lg overflow-hidden">
@@ -60,6 +68,7 @@ const Hero = () => {
               alt="Clubhouse at The City Nook - Recreational Area with Pool Table and Table Tennis Facilities"
               fill
               className="object-cover"
+              onClick={() => setIsVideoModalOpen(true)}
             />
           </div>
         </div>
