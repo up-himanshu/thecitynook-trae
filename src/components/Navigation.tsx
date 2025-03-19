@@ -3,10 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { FaWhatsappSquare } from "react-icons/fa";
 
 const Navigation = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const isAdminRoute = pathname?.startsWith('/admin/');
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    router.push("/admin/login");
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -56,6 +66,14 @@ const Navigation = () => {
             >
               <FaWhatsappSquare className="w-6 h-6" />
             </a>
+            {isAdminRoute && (
+              <button
+                onClick={handleLogout}
+                className="text-gray-900 hover:text-gray-600 cursor-pointer"
+              >
+                Logout
+              </button>
+            )}
           </div>
 
           {/* Hamburger Button */}
@@ -136,6 +154,14 @@ const Navigation = () => {
               <FaWhatsappSquare className="w-6 h-6 mr-2" />
               Chat on WhatsApp
             </a>
+            {isAdminRoute && (
+              <button
+                onClick={handleLogout}
+                className="block px-4 py-2 text-gray-900 hover:bg-gray-100 rounded-md w-full text-left"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>

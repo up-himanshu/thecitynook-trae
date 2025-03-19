@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD"; // Replace with your actual site key
-const API_BASE_URL = "https://cnbc1msz45.execute-api.us-east-1.amazonaws.com";
-// const API_BASE_URL = "http://localhost:3005";
+import { API_BASE_URL } from "@/config/api";
 
 declare global {
   interface Window {
