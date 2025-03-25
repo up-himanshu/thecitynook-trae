@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Dialog } from "@headlessui/react";
 import { FaArrowRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,6 +22,8 @@ declare global {
 
 const ReservationBar = ({ onSubmitSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [enquiry, setEnquiry] = useState({});
   // Load reCAPTCHA script
   useEffect(() => {
     const loadRecaptcha = () => {
@@ -691,15 +694,8 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               return;
             }
 
-            toast.success("Reservation submitted successfully", {
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "colored",
-            });
-
+            const responseData = await response.json();
+            setEnquiry(responseData.data);
             setPersonalDetails({
               name: "",
               phone: "",
@@ -709,6 +705,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               checkIn: null,
               checkOut: null,
             });
+            setShowSuccessModal(true);
             onSubmitSuccess();
           } catch (error) {
             toast.error(error.message, {
@@ -754,6 +751,114 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           <FaArrowRight className="w-5 h-5" />
         )}
       </button>
+
+      <Dialog
+        open={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-3xl rounded-xl bg-white p-10 shadow-2xl">
+            <div className="text-center">
+              <Dialog.Title className="text-2xl md:text-4xl font-bold mb-5 text-gray-900">
+                Your Reservation Request is Confirmed!
+              </Dialog.Title>
+              <p className="text-lg text-gray-600 mb-5">
+                Secure your stay at our exclusive rate of
+              </p>
+              <div className="flex flex-col items-center mb-2">
+                <p className="text-base text-gray-500 line-through">₹2,200</p>
+                <p className="text-4xl md:text-5xl font-bold text-yellow-600">
+                  ₹1,500
+                  <span className="text-xl font-normal text-gray-600 ml-3">
+                    /night
+                  </span>
+                </p>
+              </div>
+              <p className="text-base text-green-600 font-medium mb-5">
+                Save up to{" "}
+                <b>
+                  <text className="text-gray-900">35%</text>
+                </b>{" "}
+                compared to{" "}
+                <a
+                  href="https://www.makemytrip.com/hotels/hotel-details?hotelId=202412201436016964&checkin=date_3&checkout=date_4&country=IN&city=CTJAI&roomStayQualifier=2e0e&openDetail=true&currency=ENG&region=IN&checkAvailability=true&locusId=CTJAI&locusType=city&homestay=true&zcp=8b5f5d1bc3ed"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-[#0066FF] text-[#0066FF]"
+                >
+                  MakeMyTrip
+                </a>{" "}
+                and{" "}
+                <a
+                  href="https://airbnb.co.in/h/thecitynook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-[#FF5A5F]  text-[#FF5A5F]"
+                >
+                  Airbnb
+                </a>{" "}
+                rates!
+              </p>
+              <div className="flex flex-col space-y-4 mb-6">
+                <button
+                  onClick={async () => {
+                    if (window.gtag) {
+                      window.gtag("event", "book_now_clicked", {
+                        event_category: "Booking",
+                        event_label: "Serious booking intent",
+                      });
+                    }
+                    try {
+                      await fetch(`${API_BASE_URL}/enquiry/serious`, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                          key: "abc123",
+                        },
+                        body: JSON.stringify(enquiry),
+                      });
+                      window.location.href = `tel:+919782001181`;
+                    } catch (error) {
+                      toast.error("Failed to process your request", {
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "colored",
+                      });
+                    }
+                    setShowSuccessModal(false);
+                  }}
+                  className="w-full bg-blue-600 text-white rounded-lg py-4 text-xl font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Book Now with 20% Deposit
+                </button>
+                <button
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag("event", "book_later_clicked", {
+                        event_category: "Booking",
+                        event_label: "Closed booking modal",
+                      });
+                    }
+                    setShowSuccessModal(false);
+                  }}
+                  className="w-full bg-gray-100 text-gray-800 rounded-lg py-4 text-xl font-semibold hover:bg-gray-200 transition-colors"
+                >
+                  I'll Book Later
+                </button>
+              </div>
+              <p className="text-sm text-gray-500">
+                Book directly with us for the best rates and flexible payment
+                options
+              </p>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 };
