@@ -7,16 +7,28 @@ import VideoModal from "./VideoModal";
 const Hero = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   return (
-    <article className="hero-section" itemScope itemType="https://schema.org/LodgingBusiness">
+    <article
+      className="hero-section"
+      itemScope
+      itemType="https://schema.org/LodgingBusiness"
+    >
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4" itemProp="name">The City Nook - Jaipur</h1>
-        <p className="text-gray-600 mt-4" itemProp="description">
+        <h1 className="text-4xl font-bold mb-4" itemProp="name">
+          The City Nook - Jaipur
+        </h1>
+        <p
+          className="text-gray-600 mt-4 dark:text-gray-400"
+          itemProp="description"
+        >
           Luxury Stays and Rentals in Jagatpura, Jaipur
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 relative">
-        <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
+        <VideoModal
+          isOpen={isVideoModalOpen}
+          onClose={() => setIsVideoModalOpen(false)}
+        />
         <div
           className="relative h-[460px] rounded-lg overflow-hidden cursor-pointer"
           style={{ position: "relative" }}
@@ -73,7 +85,10 @@ const Hero = () => {
           </div>
         </div>
 
-        <meta itemProp="address" content="Jagatpura, Jaipur, Rajasthan, India" />
+        <meta
+          itemProp="address"
+          content="Jagatpura, Jaipur, Rajasthan, India"
+        />
         <meta itemProp="priceRange" content="₹2000" />
         <meta itemProp="telephone" content="+91 97820 01181" />
       </div>

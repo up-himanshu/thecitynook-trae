@@ -28,13 +28,13 @@ export default function AdminLayout({ children }) {
   };
 
   if (!isAuthenticated && pathname === "/admin/login") {
-    return <div className="min-h-screen bg-gray-50">{children}</div>;
+    return <div className="min-h-screen bg-primary">{children}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-primary">
       {/* Top Navigation */}
-      <nav className="bg-white shadow-sm border-b px-4 py-2 flex justify-between items-center fixed w-full top-0 z-10">
+      <nav className="bg-primary shadow-sm border-b px-4 py-2 flex justify-between items-center fixed w-full top-0 z-10">
         <div className="flex items-center">
           <Image
             src="/bird-logo.svg"
@@ -58,11 +58,11 @@ export default function AdminLayout({ children }) {
 
       <div className="flex pt-14">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-sm fixed h-full">
+        <aside className="w-64 bg-primary shadow-sm fixed h-full">
           <nav className="mt-4">
             <Link
               href="/admin/dashboard"
-              className={`flex items-center px-6 py-3 ${isActive("/admin/dashboard") ? "bg-yellow-50 border-r-4 border-yellow-500 text-yellow-700" : "text-gray-600 hover:bg-gray-50"}`}
+              className={`flex items-center px-6 py-3 ${isActive("/admin/dashboard") ? "bg-secondary border-r-4 border-yellow-500 text-yellow-700" : "text-primary hover:bg-secondary"}`}
             >
               <svg
                 className="h-5 w-5 mr-3"
@@ -81,7 +81,7 @@ export default function AdminLayout({ children }) {
             </Link>
             <Link
               href="/admin/enquiries"
-              className={`flex items-center px-6 py-3 ${isActive("/admin/enquiries") ? "bg-yellow-50 border-r-4 border-yellow-500 text-yellow-700" : "text-gray-600 hover:bg-gray-50"}`}
+              className={`flex items-center px-6 py-3 ${isActive("/admin/enquiries") ? "bg-secondary border-r-4 border-yellow-500 text-yellow-700" : "text-primary hover:bg-secondary"}`}
             >
               <svg
                 className="h-5 w-5 mr-3"

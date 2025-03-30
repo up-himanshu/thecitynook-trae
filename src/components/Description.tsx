@@ -2,7 +2,10 @@ const Description = () => {
   return (
     <div className="space-y-4 lg:col-span-2">
       <h3 className="text-xl font-semibold mb-4">Description</h3>
-      <p className="text-gray-600 leading-relaxed" itemProp="description">
+      <p
+        className="text-gray-600 dark:text-gray-400 leading-relaxed"
+        itemProp="description"
+      >
         Cozy studio in a prime location, perfect for solo travelers, couples, or
         business guests. The space features chic interiors, a comfy double bed,
         fully-equipped kitchenette, and a clean bathroom. Enjoy amenities like
@@ -14,7 +17,7 @@ const Description = () => {
       <div className="mt-6">
         <h3 className="text-xl font-semibold mb-4">Guest Access</h3>
         <p
-          className="text-gray-600 leading-relaxed"
+          className="text-gray-600 dark:text-gray-400 leading-relaxed"
           itemProp="additionalProperty"
           itemScope
           itemType="https://schema.org/PropertyValue"
@@ -32,11 +35,11 @@ const Description = () => {
           </span>
         </p>
       </div>
-      <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
-        <h3 className="text-xl font-semibold mb-4 text-blue-800">
+      <div className="mt-8 p-4 bg-secondary rounded-lg border border-blue-100 dark:border-black">
+        <h3 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">
           Book Your Stay
         </h3>
-        <p className="text-gray-700 mb-4">
+        <p className="text-gray-700 mb-4 dark:text-grey-500">
           Find us on popular booking platforms <strong>OR</strong> send a direct
           inquiry for the best rates!
         </p>
@@ -58,7 +61,7 @@ const Description = () => {
             Book on Airbnb
           </a>
         </div>
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-gray-600 dark:text-grey-500">
           For the best available rates, send us a direct reservation inquiry!
         </p>
       </div>

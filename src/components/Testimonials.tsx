@@ -50,8 +50,10 @@ We loved our stay as Astha was very co operative.`,
 
 const Testimonials = () => {
   return (
-    <div className="h-full p-6 bg-white rounded-lg shadow-sm">
-      <h2 className="text-2xl font-semibold mb-6">Guest Reviews</h2>
+    <div className="h-full p-6 bg-white dark:bg-primary rounded-lg shadow-sm">
+      <h2 className="text-2xl font-semibold mb-6 dark:text-white">
+        Guest Reviews
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {testimonials.map((testimonial) => (
           <TestimonialCard

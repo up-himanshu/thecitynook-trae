@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-primary">
       <Navigation />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 mt-16">

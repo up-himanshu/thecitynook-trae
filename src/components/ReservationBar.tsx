@@ -339,13 +339,13 @@ const ReservationBar = ({ onSubmitSuccess }) => {
   return (
     <div
       ref={reservationBarRef}
-      className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-white rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
+      className="relative -mt-[138px] mx-auto w-full md:w-11/12 lg:w-10/12 xl:w-7/12 bg-primary dark:bg-primary rounded-lg shadow-lg p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4"
       style={{ zIndex: 40 }}
     >
-      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
+      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-400 flex-shrink-0"
+          className="h-5 w-5 text-gray-400 dark:text-gray-500 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -361,35 +361,37 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           className="flex flex-col cursor-pointer personal-details-trigger"
           onClick={handlePersonalDetailsClick}
         >
-          <label className="text-xs text-gray-500">Personal Details</label>
+          <label className="text-xs text-gray-500 dark:text-gray-400">
+            Personal Details
+          </label>
           <input
             type="text"
             readOnly
             value={getDisplayText()}
-            className="border-none p-0 text-sm focus:ring-0 cursor-pointer"
+            className="border-none p-0 text-sm focus:ring-0 cursor-pointer bg-transparent dark:text-gray-300"
           />
         </div>
         {showPersonalDetails && (
           <div
             ref={personalDetailsRef}
-            className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-6"
+            className="absolute top-full left-0 mt-2 bg-primary dark:bg-secondary rounded-lg shadow-xl p-6"
             style={{ width: "300px", zIndex: 9999 }}
           >
             <form onSubmit={handlePersonalDetailsSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Name
                 </label>
                 <input
                   type="text"
                   name="name"
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300"
                   defaultValue={personalDetails.name}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Phone
                 </label>
                 <input
@@ -397,37 +399,18 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                   name="phone"
                   required
                   maxLength={10}
-                  onKeyPress={(e) => {
-                    if (
-                      !/[0-9]/.test(e.key) &&
-                      e.key !== "Backspace" &&
-                      e.key !== "Delete" &&
-                      e.key !== "ArrowLeft" &&
-                      e.key !== "ArrowRight"
-                    ) {
-                      e.preventDefault();
-                      toast.error("Please enter numbers only", {
-                        autoClose: 3000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "colored",
-                      });
-                    }
-                  }}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300"
                   defaultValue={personalDetails.phone}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Email
                 </label>
                 <input
                   type="email"
                   name="email"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300"
                   defaultValue={personalDetails.email}
                 />
               </div>
@@ -441,10 +424,10 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           </div>
         )}
       </div>
-      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4 relative">
+      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-400 flex-shrink-0"
+          className="h-5 w-5 text-gray-400 dark:text-gray-500 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -460,18 +443,20 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           className="flex flex-col cursor-pointer calendar-trigger"
           onClick={handleDateClick}
         >
-          <label className="text-xs text-gray-500">Check In - Check Out</label>
+          <label className="text-xs text-gray-500 dark:text-gray-400">
+            Check In - Check Out
+          </label>
           <input
             type="text"
             readOnly
             value={formatDateRange()}
-            className="border-none p-0 text-sm focus:ring-0 cursor-pointer"
+            className="border-none p-0 text-sm focus:ring-0 cursor-pointer bg-transparent dark:text-gray-300"
           />
         </div>
         {showCalendar && (
           <div
             ref={calendarRef}
-            className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 md:p-8 overflow-x-auto"
+            className="absolute top-full left-0 mt-2 bg-primary dark:bg-secondary rounded-lg shadow-xl p-4 md:p-8 overflow-x-auto"
             style={{
               width: "calc(100vw - 32px)",
               maxWidth: "800px",
@@ -505,13 +490,13 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                 return (
                   <div key={monthOffset}>
                     <div className="text-center mb-8">
-                      <h4 className="font-semibold text-lg">{`${month} ${year}`}</h4>
+                      <h4 className="font-semibold text-lg dark:text-gray-300">{`${month} ${year}`}</h4>
                     </div>
                     <div className="grid grid-cols-7 gap-4">
                       {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
                         <div
                           key={day}
-                          className="text-center text-sm text-gray-500 py-2"
+                          className="text-center text-sm text-gray-500 dark:text-gray-400 py-2"
                         >
                           {day}
                         </div>
@@ -552,12 +537,12 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                                 isSelected
                                   ? "bg-blue-500 text-white"
                                   : isPast || (!isSelectable && !isBlocked)
-                                  ? "text-gray-400 cursor-not-allowed"
+                                  ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
                                   : isBlocked
-                                  ? "bg-red-100 text-red-600 cursor-not-allowed"
+                                  ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 cursor-not-allowed"
                                   : isInRange
-                                  ? "bg-blue-100"
-                                  : "hover:bg-gray-100"
+                                  ? "bg-blue-100 dark:bg-blue-900 dark:text-blue-300"
+                                  : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300"
                               }
                             `}
                           >
@@ -576,7 +561,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       <div className="flex items-center gap-2 flex-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-400"
+          className="h-5 w-5 text-gray-400 dark:text-gray-500"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -589,7 +574,9 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           />
         </svg>
         <div className="flex flex-col relative">
-          <label className="text-xs text-gray-500">Guests</label>
+          <label className="text-xs text-gray-500 dark:text-gray-400">
+            Guests
+          </label>
           <div
             className="cursor-pointer guest-selector-trigger"
             onClick={() => setShowGuestSelector(!showGuestSelector)}
@@ -598,7 +585,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               type="text"
               readOnly
               value={`${guestCount} ${guestCount === 1 ? "guest" : "guests"}`}
-              className="border-none p-0 text-sm focus:ring-0 cursor-pointer"
+              className="border-none p-0 text-sm focus:ring-0 cursor-pointer bg-transparent dark:text-gray-300"
             />
           </div>
           {showGuestSelector && (
@@ -759,19 +746,21 @@ const ReservationBar = ({ onSubmitSuccess }) => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-3xl rounded-xl bg-white p-10 shadow-2xl">
+          <Dialog.Panel className="mx-auto max-w-3xl rounded-xl bg-white p-10 shadow-2xl dark:bg-primary">
             <div className="text-center">
-              <Dialog.Title className="text-2xl md:text-4xl font-bold mb-5 text-gray-900">
+              <Dialog.Title className="text-2xl md:text-4xl font-bold mb-5 text-gray-900 dark:text-white">
                 Your Reservation Request is Confirmed!
               </Dialog.Title>
-              <p className="text-lg text-gray-600 mb-5">
+              <p className="text-lg text-gray-600 mb-5 dark:text-gray-400">
                 Secure your stay at our exclusive rate of
               </p>
               <div className="flex flex-col items-center mb-2">
-                <p className="text-base text-gray-500 line-through">₹2,200</p>
+                <p className="text-base text-gray-500 dark:text-gray-400 line-through">
+                  ₹2,200
+                </p>
                 <p className="text-4xl md:text-5xl font-bold text-yellow-600">
                   ₹1,500
-                  <span className="text-xl font-normal text-gray-600 ml-3">
+                  <span className="text-xl font-normal text-gray-600 ml-3 dark:text-gray-400">
                     /night
                   </span>
                 </p>
@@ -779,7 +768,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               <p className="text-base text-green-600 font-medium mb-5">
                 Save up to{" "}
                 <b>
-                  <text className="text-gray-900">35%</text>
+                  <text className="text-gray-900 dark:text-gray-300">35%</text>
                 </b>{" "}
                 compared to{" "}
                 <a

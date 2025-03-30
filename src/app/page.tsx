@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-primary">
       <ToastContainer />
       <Navigation />
       {/* Main Content */}
