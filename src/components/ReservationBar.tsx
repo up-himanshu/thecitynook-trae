@@ -800,7 +800,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
                       });
                     }
                     try {
-                      await fetch(`${API_BASE_URL}/enquiry/serious`, {
+                      fetch(`${API_BASE_URL}/enquiry/serious`, {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/json",
