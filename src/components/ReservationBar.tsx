@@ -756,10 +756,10 @@ const ReservationBar = ({ onSubmitSuccess }) => {
               </p>
               <div className="flex flex-col items-center mb-2">
                 <p className="text-base text-gray-500 dark:text-gray-400 line-through">
-                  ₹2,200
+                  ₹2,500
                 </p>
                 <p className="text-4xl md:text-5xl font-bold text-yellow-600">
-                  ₹1,500
+                  ₹2,000
                   <span className="text-xl font-normal text-gray-600 ml-3 dark:text-gray-400">
                     /night
                   </span>
