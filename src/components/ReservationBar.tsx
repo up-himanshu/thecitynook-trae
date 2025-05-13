@@ -358,7 +358,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           />
         </svg>
         <div
-          className="flex flex-col cursor-pointer personal-details-trigger"
+          className="flex flex-col cursor-pointer personal-details-trigger w-full"
           onClick={handlePersonalDetailsClick}
         >
           <label className="text-xs text-gray-500 dark:text-gray-400">
@@ -440,7 +440,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           />
         </svg>
         <div
-          className="flex flex-col cursor-pointer calendar-trigger"
+          className="flex flex-col cursor-pointer calendar-trigger w-full"
           onClick={handleDateClick}
         >
           <label className="text-xs text-gray-500 dark:text-gray-400">
@@ -558,7 +558,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
           </div>
         )}
       </div>
-      <div className="flex items-center gap-2 flex-1">
+      <div className="flex items-center gap-2 w-full md:w-auto md:flex-1 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 pb-4 md:pb-0 md:pr-4 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5 text-gray-400 dark:text-gray-500"
@@ -573,7 +573,7 @@ const ReservationBar = ({ onSubmitSuccess }) => {
             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
           />
         </svg>
-        <div className="flex flex-col relative">
+        <div className="flex flex-col relative w-full">
           <label className="text-xs text-gray-500 dark:text-gray-400">
             Guests
           </label>
