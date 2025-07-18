@@ -114,7 +114,16 @@ export default function Map({ properties }: MapProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Left: Map */}
           <div className="bg-black h-96 rounded-lg overflow-hidden relative">
-            <div ref={mapRef} className="w-full h-full" />
+            {/* <div ref={mapRef} className="w-full h-full" /> */}
+            <iframe
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyBn63Ih9Hhw3idqMkKVpJPuFFTkRsEyAvM&origin=The%20City%20Nook%20-%20Solitaire%20Suites&destination=The%20City%20Nook%20-%20Urban%20Suites"
+            ></iframe>
           </div>
           {/* Right: About/Details */}
           <div className="bg-secondary rounded-lg p-8 flex flex-col justify-center shadow-lg">
