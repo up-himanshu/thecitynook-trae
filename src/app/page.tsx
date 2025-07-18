@@ -1,45 +1,58 @@
-"use client";
+import type { Metadata } from "next";
+import Hero from "@/components/home/hero";
+import Highlights from "@/components/home/highlights";
+import Map from "@/components/home/map";
+import Properties from "@/components/home/properties";
+import Testimonials from "@/components/home/testimonials";
+import { properties } from "@/data/properties";
 
-import PhotoGallery from "@/components/PhotoGallery";
-import Testimonials from "@/components/Testimonials";
-import Footer from "@/components/Footer";
-import Navigation from "@/components/Navigation";
-import ReservationBar from "@/components/ReservationBar";
-import About from "@/components/About";
-import Hero from "@/components/Hero";
-import { ToastContainer } from "react-toastify";
+export const metadata: Metadata = {
+  title: "TheCityNook - Premium Stays in Jaipur | Home",
+  description:
+    "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home. Perfect for both business and leisure travelers.",
+  keywords:
+    "Jaipur stays, premium accommodations, business stays, leisure stays, TheCityNook, luxury apartments, short-term rentals, Jaipur hotels, vacation rentals",
+  openGraph: {
+    title: "TheCityNook - Premium Stays in Jaipur",
+    description:
+      "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "TheCityNook",
+    images: [
+      {
+        url: "/images/1.JPG",
+        width: 1200,
+        height: 630,
+        alt: "TheCityNook Premium Stays in Jaipur",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TheCityNook - Premium Stays in Jaipur",
+    description:
+      "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home.",
+    images: ["/images/1.JPG"],
+  },
+};
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-primary">
-      <ToastContainer />
-      <Navigation />
-      {/* Main Content */}
-      <main className="w-full px-4 sm:px-6 lg:px-8 py-16 mt-16">
-        <Hero />
-        <ReservationBar onSubmitSuccess={() => {}} />
-
-        {/* Property Features */}
-        <section id="property-features" className="mb-12 px-4 md:px-16">
-          <About />
-        </section>
-
-        {/* Gallery Section */}
-        <section
-          id="gallery"
-          className="mb-12 px-4 md:px-16"
-          style={{ position: "relative", zIndex: 0 }}
-        >
-          <PhotoGallery />
-        </section>
-
-        {/* Testimonials Section */}
-        <section id="testimonials" className="mb-12 px-4 md:px-16">
-          <Testimonials />
-        </section>
-      </main>
-      {/* Footer */}
-      <Footer />
-    </div>
+    <main className="min-h-screen">
+      <Hero />
+      <section aria-label="Featured Properties">
+        <Properties properties={properties} />
+      </section>
+      <section aria-label="Why Choose Us">
+        <Highlights />
+      </section>
+      <section aria-label="Guest Testimonials">
+        <Testimonials />
+      </section>
+      <section aria-label="Property Locations">
+        <Map properties={properties} />
+      </section>
+    </main>
   );
 }
