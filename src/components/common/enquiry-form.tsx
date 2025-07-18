@@ -13,6 +13,18 @@ import {
 } from "react-icons/fa";
 import SuccessPopup from "./success-popup";
 
+// TypeScript declarations for reCAPTCHA
+declare global {
+  interface Window {
+    grecaptcha: {
+      execute: (
+        siteKey: string,
+        options: { action: string }
+      ) => Promise<string>;
+    };
+  }
+}
+
 const RECAPTCHA_SITE_KEY = "6LecJssqAAAAAFtmK3t8TRS60PA-WgR9CDgGGYhD";
 
 export default function EnquiryForm() {
@@ -25,6 +37,7 @@ export default function EnquiryForm() {
     phone: "",
     dateFrom: "",
     dateTo: "",
+    recaptchaToken: "",
   });
   const [errors, setErrors] = useState<Partial<ReservationEnquiry>>({});
 
@@ -59,6 +72,18 @@ export default function EnquiryForm() {
     };
   }, []);
 
+  const executeRecaptcha = async () => {
+    try {
+      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {
+        action: "reservation_submit",
+      });
+      return token;
+    } catch (error) {
+      console.error("Error executing reCAPTCHA:", error);
+      throw new Error("Failed to verify reCAPTCHA");
+    }
+  };
+
   const validateForm = () => {
     const newErrors: Partial<ReservationEnquiry> = {};
 
@@ -90,6 +115,8 @@ export default function EnquiryForm() {
     setIsSubmitting(true);
 
     try {
+      const recaptchaToken = await executeRecaptcha();
+      formData.recaptchaToken = recaptchaToken;
       const success = await sendReservationEnquiry(formData);
 
       if (success) {

@@ -6,4 +6,5 @@ export interface ReservationEnquiry {
   dateFrom: string;
   dateTo: string;
   guestCount?: number;
+  recaptchaToken?: string;
 }

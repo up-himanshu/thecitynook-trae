@@ -21,6 +21,7 @@ export default function BookYourStay({
     dateFrom: "",
     dateTo: "",
     guestCount: 2,
+    recaptchaToken: "",
   });
 
   // Load reCAPTCHA script
@@ -44,11 +45,23 @@ export default function BookYourStay({
     };
   }, []);
 
+  const executeRecaptcha = async () => {
+    try {
+      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {
+        action: "reservation_submit",
+      });
+      return token;
+    } catch (error) {
+      console.error("Error executing reCAPTCHA:", error);
+      throw new Error("Failed to verify reCAPTCHA");
+    }
+  };
+
   return (
     <div className="bg-secondary rounded-xl p-8 shadow-lg sticky top-24">
       <h2 className="text-2xl font-bold mb-6">Book Your Stay</h2>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           if (window.gtag) {
             window.gtag(
@@ -60,6 +73,8 @@ export default function BookYourStay({
               }
             );
           }
+          const recaptchaToken = await executeRecaptcha();
+          formData.recaptchaToken = recaptchaToken;
           sendReservationEnquiry(formData).then((success) => {
             if (success) {
               setFormData({
