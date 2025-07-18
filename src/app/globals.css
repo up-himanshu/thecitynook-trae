@@ -20,23 +20,29 @@
 :root {
   --background: #ffffff;
   --background-secondary: #f3f4f6;
+  --background-footer: #10151c;
   --foreground: #171717;
   --foreground-secondary: #4b5563;
   --foreground-muted: #6b7280;
+  --background-highlight: #cbda29;
+  --background-business: #888888;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #1f2937;
-    --background-secondary: #171717;
+    --background-secondary: #293649;
+    --background-footer: #10151c;
     --foreground: #ededed;
     --foreground-secondary: #d1d5db;
     --foreground-muted: #9ca3af;
+    --background-highlight: #cbda29;
+    --background-business: #888888;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
