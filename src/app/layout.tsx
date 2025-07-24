@@ -62,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const gTagId =
-    process.env.REACT_APP_NODE_ENV !== "development" ? "G-W4502QGNWZ" : "";
+    process.env.REACT_APP_NODE_ENV !== "development" ? "G-QPKHM1E2R3" : "";
 
   return (
     <html lang="en" className={openSans.className}>
@@ -77,7 +77,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             if (!window.location.pathname.startsWith('/admin')) {
               gtag('js', new Date());
-              gtag('config', 'G-W4502QGNWZ');
+              gtag('config', 'G-QPKHM1E2R3');
             }
           `}
         </Script>
