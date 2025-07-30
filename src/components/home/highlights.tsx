@@ -39,9 +39,9 @@ export default function Highlights() {
     <section className="py-16 bg-primary">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-4">
-          Why Choose TheCityNook?
+          Why Choose The City Nook?
         </h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-secondary text-center mb-12 max-w-2xl mx-auto">
           Experience the perfect blend of comfort, convenience, and exceptional
           service
         </p>

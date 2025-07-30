@@ -7,32 +7,32 @@ import { properties } from "@/data/properties";
 import { getIconComponent } from "@/lib/icon-mapping";
 
 export const metadata: Metadata = {
-  title: "All Properties - TheCityNook | Premium Stays in Jaipur",
+  title: "All Properties - The City Nook | Premium Stays in Jaipur",
   description:
-    "Browse all premium properties available with TheCityNook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
+    "Browse all premium properties available with The City Nook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
   keywords:
-    "Jaipur properties, all accommodations, premium stays collection, luxury apartments, TheCityNook properties, Jaipur rentals",
+    "Jaipur properties, all accommodations, premium stays collection, luxury apartments, The City Nook properties, Jaipur rentals",
   openGraph: {
-    title: "All Properties - TheCityNook",
+    title: "All Properties - The City Nook",
     description:
-      "Browse all premium properties available with TheCityNook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
+      "Browse all premium properties available with The City Nook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
     type: "website",
     locale: "en_IN",
-    siteName: "TheCityNook",
+    siteName: "The City Nook",
     images: [
       {
         url: "/images/2.JPG",
         width: 1200,
         height: 630,
-        alt: "TheCityNook Properties Collection",
+        alt: "The City Nook Properties Collection",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "All Properties - TheCityNook",
+    title: "All Properties - The City Nook",
     description:
-      "Browse all premium properties available with TheCityNook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
+      "Browse all premium properties available with The City Nook in Jaipur. Find your perfect accommodation from our curated collection of luxury stays.",
     images: ["/images/2.JPG"],
   },
 };

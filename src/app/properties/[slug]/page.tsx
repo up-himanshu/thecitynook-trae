@@ -13,22 +13,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!property) {
     return {
-      title: "Property Not Found - TheCityNook",
+      title: "Property Not Found - The City Nook",
       description: "The property you're looking for doesn't exist.",
     };
   }
 
   return {
-    title: `${property.title} - ${property.location} | TheCityNook`,
+    title: `${property.title} - ${property.location} | The City Nook`,
     description: property.descriptions[0].description.substring(0, 160) + "...",
-    keywords: `${property.title}, ${property.location}, Jaipur accommodation, TheCityNook, premium stays, luxury apartments`,
+    keywords: `${property.title}, ${property.location}, Jaipur accommodation, The City Nook, premium stays, luxury apartments`,
     openGraph: {
       title: `${property.title} - ${property.location}`,
       description:
         property.descriptions[0].description.substring(0, 160) + "...",
       type: "website",
       locale: "en_IN",
-      siteName: "TheCityNook",
+      siteName: "The City Nook",
       images: [
         {
           url: getResizedURL(

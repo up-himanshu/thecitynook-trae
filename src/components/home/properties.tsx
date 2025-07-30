@@ -14,7 +14,7 @@ export default function Properties({ properties }: { properties: Property[] }) {
         <h2 className="text-4xl font-bold text-center mb-4">
           Our Stays Across the City
         </h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-secondary text-center mb-12 max-w-2xl mx-auto">
           Access individual listings for more information, photos, availability
           dates and prices.
         </p>

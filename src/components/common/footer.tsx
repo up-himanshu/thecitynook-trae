@@ -18,14 +18,14 @@ export default function Footer() {
             <div className="flex items-center space-x-2 mb-4">
               <Image
                 src="/tcn_logo.svg"
-                alt="TheCityNook Logo"
+                alt="The City Nook Logo"
                 width={60}
                 height={70}
               />
               <span className="text-xl font-bold mt-1">The City Nook</span>
             </div>
             <p className="text-gray-400">
-              TheCityNook offers curated stays across the city. Experience
+              The City Nook offers curated stays across the city. Experience
               comfort and style in prime locations.
             </p>
           </div>
@@ -100,7 +100,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} TheCityNook. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} The City Nook. All rights reserved. |{" "}
+            <a href="/privacy-policy">Privacy Policy</a>
+          </p>
         </div>
       </div>
     </footer>

@@ -50,7 +50,7 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-primary mb-2"
           >
             Name
           </label>
@@ -67,7 +67,7 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-primary mb-2"
           >
             Email
           </label>
@@ -86,7 +86,7 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="phone"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-primary mb-2"
           >
             Phone
           </label>
@@ -102,7 +102,7 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="subject"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-primary mb-2"
           >
             Subject
           </label>
@@ -125,7 +125,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-700 mb-2"
+          className="block text-sm font-medium text-primary mb-2"
         >
           Message
         </label>
@@ -142,7 +142,7 @@ export default function ContactForm() {
       <div className="text-center">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          className="bg-highlight hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center hover:bg-business hover:text-white transition duration-300"
         >
           Send Message
         </button>

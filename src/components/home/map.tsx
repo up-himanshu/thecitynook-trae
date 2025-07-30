@@ -129,10 +129,10 @@ export default function Map({ properties }: MapProps) {
           <div className="bg-secondary rounded-lg p-8 flex flex-col justify-center shadow-lg">
             <h3 className="text-2xl font-bold mb-4 text-primary flex items-center">
               <FaMapMarkerAlt className="mr-2 text-blue-500" />
-              About TheCityNook
+              About The City Nook
             </h3>
             <p className="text-secondary mb-6">
-              TheCityNook offers curated urban stays in Jaipur, blending
+              The City Nook offers curated urban stays in Jaipur, blending
               comfort, style, and convenience. Our handpicked properties are
               perfect for business and leisure travelers alike, ensuring a
               memorable city experience.

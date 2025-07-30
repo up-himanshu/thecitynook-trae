@@ -14,7 +14,7 @@ export default function Testimonials() {
       image: "/images/devang.avif",
       rating: 5,
       date: "March 2023",
-      text: "Absolutely loved my stay at TheCityNook! The location was perfect and the amenities were top-notch.",
+      text: "Absolutely loved my stay at The City Nook! The location was perfect and the amenities were top-notch.",
     },
     {
       id: 2,
@@ -82,8 +82,8 @@ export default function Testimonials() {
                       ))}
                     </div>
                     <div className="relative">
-                      <FaQuoteLeft className="absolute -top-2 -left-2 text-gray-200 text-2xl opacity-50" />
-                      <p className="text-gray-600 italic pl-6">
+                      <FaQuoteLeft className="absolute -top-2 -left-2 text-gray-500 text-2xl opacity-50" />
+                      <p className="text-gray-500 italic pl-6">
                         {testimonial.text}
                       </p>
                     </div>
@@ -98,7 +98,7 @@ export default function Testimonials() {
                 key={index}
                 onClick={() => setActiveTestimonial(index)}
                 className={`w-3 h-3 rounded-full ${
-                  activeTestimonial === index ? "bg-blue-600" : "bg-gray-300"
+                  activeTestimonial === index ? "bg-highlight" : "bg-gray-300"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />

@@ -194,7 +194,7 @@ export default function EnquiryForm() {
           <div className="absolute bottom-16 right-0 w-80 bg-secondary opacity-90 rounded-lg shadow-2xl border border-gray-200">
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold text-primary">
                   Send Enquiry
                 </h3>
                 <button
@@ -207,7 +207,7 @@ export default function EnquiryForm() {
                     }
                     setIsOpen(false);
                   }}
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                  className="text-primary hover:text-secondary transition-colors"
                   aria-label="Close form"
                 >
                   <FaTimes className="w-4 h-4" />
@@ -219,7 +219,7 @@ export default function EnquiryForm() {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-primary mb-1"
                   >
                     <FaUser className="inline w-3 h-3 mr-1" />
                     Name <span className="text-red-500">*</span>
@@ -247,7 +247,7 @@ export default function EnquiryForm() {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-primary mb-1"
                   >
                     <FaPhone className="inline w-3 h-3 mr-1" />
                     Phone <span className="text-red-500">*</span>
@@ -281,7 +281,7 @@ export default function EnquiryForm() {
                   <div>
                     <label
                       htmlFor="dateFrom"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium text-primary mb-1"
                     >
                       <FaCalendarAlt className="inline w-3 h-3 mr-1" />
                       From <span className="text-red-500">*</span>
@@ -313,7 +313,7 @@ export default function EnquiryForm() {
                   <div>
                     <label
                       htmlFor="dateTo"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium text-primary mb-1"
                     >
                       <FaCalendarAlt className="inline w-3 h-3 mr-1" />
                       To <span className="text-red-500">*</span>
@@ -354,7 +354,7 @@ export default function EnquiryForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-highlight hover:bg-primary/90 text-primary font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-highlight hover:bg-primary/90 text-black font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center hover:bg-business hover:text-white transition duration-300"
                 >
                   {isSubmitting ? (
                     <>

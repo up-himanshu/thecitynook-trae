@@ -12,32 +12,32 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "TheCityNook - Premium Stays in Jaipur | Home",
+  title: "The City Nook - Premium Stays in Jaipur | Home",
   description:
-    "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home. Perfect for both business and leisure travelers.",
+    "Discover charming stays across Jaipur with The City Nook. Experience unique spaces in prime locations with the comfort of home. Perfect for both business and leisure travelers.",
   keywords:
-    "Jaipur stays, premium accommodations, business stays, leisure stays, TheCityNook, luxury apartments, short-term rentals",
+    "Jaipur stays, premium accommodations, business stays, leisure stays, The City Nook, luxury apartments, short-term rentals",
   openGraph: {
-    title: "TheCityNook - Premium Stays in Jaipur",
+    title: "The City Nook - Premium Stays in Jaipur",
     description:
-      "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home.",
+      "Discover charming stays across Jaipur with The City Nook. Experience unique spaces in prime locations with the comfort of home.",
     type: "website",
     locale: "en_IN",
-    siteName: "TheCityNook",
+    siteName: "The City Nook",
     images: [
       {
         url: "/images/1.JPG",
         width: 1200,
         height: 630,
-        alt: "TheCityNook Premium Stays in Jaipur",
+        alt: "The City Nook - Premium Stays in Jaipur",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TheCityNook - Premium Stays in Jaipur",
+    title: "The City Nook - Premium Stays in Jaipur",
     description:
-      "Discover charming stays across Jaipur with TheCityNook. Experience unique spaces in prime locations with the comfort of home.",
+      "Discover charming stays across Jaipur with The City Nook. Experience unique spaces in prime locations with the comfort of home.",
     images: ["/images/1.JPG"],
   },
   robots: {

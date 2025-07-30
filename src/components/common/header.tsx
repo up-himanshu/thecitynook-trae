@@ -53,7 +53,7 @@ export default function Header({
           <Link href="/">
             <Image
               src="/tcn_logo.svg"
-              alt="TheCityNook Logo"
+              alt="The City Nook Logo"
               width={80}
               height={30}
               className="-mt-1"

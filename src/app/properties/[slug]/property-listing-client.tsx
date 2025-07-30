@@ -111,7 +111,7 @@ export default function PropertyListingClient({
                     <h2 className="text-2xl font-bold mb-4">
                       {description.title}
                     </h2>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-secondary leading-relaxed">
                       {description.description}
                     </p>
                   </div>
@@ -128,8 +128,8 @@ export default function PropertyListingClient({
                     if (!Icon) return null;
                     return (
                       <div key={index} className="flex items-center space-x-3">
-                        <Icon className="text-2xl text-highlight" />
-                        <span className="text-gray-700">{feature.label}</span>
+                        <Icon className="text-2xl text-secondary" />
+                        <span className="text-secondary">{feature.label}</span>
                       </div>
                     );
                   })}
@@ -194,7 +194,7 @@ export default function PropertyListingClient({
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="TheCityNook Location in Jagatpura, Jaipur"
+                    title="The City Nook Location in Jagatpura, Jaipur"
                     className="w-full h-full"
                   ></iframe>
                 </div>

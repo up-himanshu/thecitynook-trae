@@ -1,32 +1,32 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - TheCityNook | Data Protection & Privacy",
+  title: "Privacy Policy - The City Nook | Data Protection & Privacy",
   description:
-    "TheCityNook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
+    "The City Nook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
   keywords:
-    "privacy policy, data protection, personal information, TheCityNook privacy, data rights, privacy commitment",
+    "privacy policy, data protection, personal information, The City Nook privacy, data rights, privacy commitment",
   openGraph: {
-    title: "Privacy Policy - TheCityNook",
+    title: "Privacy Policy - The City Nook",
     description:
-      "TheCityNook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
+      "The City Nook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
     type: "website",
     locale: "en_IN",
-    siteName: "TheCityNook",
+    siteName: "The City Nook",
     images: [
       {
         url: "/images/1.JPG",
         width: 1200,
         height: 630,
-        alt: "TheCityNook Privacy Policy",
+        alt: "The City Nook Privacy Policy",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy - TheCityNook",
+    title: "Privacy Policy - The City Nook",
     description:
-      "TheCityNook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
+      "The City Nook's privacy policy explains how we collect, use, and protect your personal information. Learn about your data rights and our commitment to privacy.",
     images: ["/images/1.JPG"],
   },
 };
@@ -40,7 +40,7 @@ export default function PrivacyPolicy() {
         <div className="space-y-8">
           <section>
             <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               At The City Nook, we take your privacy seriously. This Privacy
               Policy explains how we collect, use, disclose, and safeguard your
               information when you visit our website or make a reservation.
@@ -54,11 +54,11 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">
               Information We Collect
             </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-secondary leading-relaxed mb-4">
               We collect information that you voluntarily provide to us when you
               make a reservation, including:
             </p>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2">
+            <ul className="list-disc pl-6 text-secondary space-y-2">
               <li>Name</li>
               <li>Phone number</li>
               <li>Email address</li>
@@ -71,10 +71,10 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">
               How We Use Your Information
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               We use the information we collect to:
             </p>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2 mt-4">
+            <ul className="list-disc pl-6 text-secondary space-y-2 mt-4">
               <li>Process your reservation requests</li>
               <li>Communicate with you about your stay</li>
               <li>Send you important updates about your booking</li>
@@ -87,7 +87,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">
               Information Security
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               We implement appropriate technical and organizational security
               measures to protect your personal information. However, please
               note that no method of transmission over the internet or
@@ -99,7 +99,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">
               Third-Party Services
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               We may use third-party service providers to help us operate our
               website or administer activities on our behalf. We may share your
               information with these third parties only to the extent necessary
@@ -109,10 +109,10 @@ export default function PrivacyPolicy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Your Rights</h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-secondary leading-relaxed mb-4">
               You have the right to:
             </p>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2">
+            <ul className="list-disc pl-6 text-secondary space-y-2">
               <li>Access your personal information</li>
               <li>Correct inaccurate or incomplete information</li>
               <li>Request deletion of your information</li>
@@ -123,7 +123,7 @@ export default function PrivacyPolicy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               If you have questions or concerns about this Privacy Policy,
               please contact us at:
               <br />
@@ -138,14 +138,14 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">
               Changes to This Privacy Policy
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-secondary leading-relaxed">
               We reserve the right to update or change our Privacy Policy at any
               time. Any changes will be posted on this page with an updated
               revision date.
             </p>
           </section>
 
-          <div className="text-gray-500 text-sm mt-12">
+          <div className="text-gray-400 text-sm mt-12">
             Last updated: {new Date("2024-01-01").toLocaleDateString()}
           </div>
         </div>
