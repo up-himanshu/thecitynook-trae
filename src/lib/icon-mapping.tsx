@@ -25,6 +25,7 @@ import {
   FaSwimmingPool,
 } from "react-icons/fa";
 import { FaKitchenSet } from "react-icons/fa6";
+import { TbAirConditioning } from "react-icons/tb";
 
 export const iconMapping: {
   [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -53,6 +54,7 @@ export const iconMapping: {
   FaConciergeBell,
   FaSwimmingPool,
   FaKitchenSet,
+  TbAirConditioning,
 };
 
 export function getIconComponent(
