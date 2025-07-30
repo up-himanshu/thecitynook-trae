@@ -1,5 +1,5 @@
 import { ReservationEnquiry } from "@/types/reservation-enquiry";
-import { API_KEY, BASE_URL } from "./constants";
+import { API_KEY } from "./constants";
 import { AdminMessage } from "@/types/message";
 
 const cloudinaryBaseUrl =
@@ -31,14 +31,17 @@ export function getResizedURL(
 }
 
 export async function sendReservationEnquiry(data: ReservationEnquiry) {
-  const response = await fetch(`${BASE_URL}/reservation-enquiry`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      key: API_KEY,
-    },
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/reservation-enquiry`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        key: API_KEY,
+      },
+      body: JSON.stringify(data),
+    }
+  );
 
   if (response.ok && response.status === 201) {
     return true;
@@ -48,14 +51,17 @@ export async function sendReservationEnquiry(data: ReservationEnquiry) {
 }
 
 export async function sendMessageToAdmin(data: AdminMessage): Promise<boolean> {
-  const response = await fetch(`${BASE_URL}/send-message`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      key: API_KEY,
-    },
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/send-message`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        key: API_KEY,
+      },
+      body: JSON.stringify(data),
+    }
+  );
 
   if (response.ok && response.status === 200) {
     return true;
