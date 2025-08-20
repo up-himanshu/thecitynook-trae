@@ -1,38 +1,12 @@
 "use client";
 
+import { testimonials } from "@/data/testimonials";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 
 export default function Testimonials() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Devang",
-      image: "/images/devang.avif",
-      rating: 5,
-      date: "March 2023",
-      text: "Absolutely loved my stay at The City Nook! The location was perfect and the amenities were top-notch.",
-    },
-    {
-      id: 2,
-      name: "Raghav",
-      image: "/images/raghav.avif",
-      rating: 5,
-      date: "January 2023",
-      text: "Clean, stylish, and in the perfect location. Will definitely be staying here again on my next visit!",
-    },
-    {
-      id: 3,
-      name: "Udit",
-      image: "/images/udit.avif",
-      rating: 5,
-      date: "November 2022",
-      text: "The host was incredibly responsive and the property exceeded all expectations. Highly recommend!",
-    },
-  ];
 
   // Auto-rotate testimonials every 5 seconds
   useEffect(() => {
@@ -41,7 +15,7 @@ export default function Testimonials() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, []);
 
   return (
     <section className="py-16 bg-secondary">

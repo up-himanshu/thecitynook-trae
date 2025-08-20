@@ -135,12 +135,12 @@ export const properties: Property[] = [
     ],
     images: [
       {
-        src: "1_momq7j",
-        alt: "Urban Suites Main",
-      },
-      {
         src: "9_xuzi7s",
         alt: "Urban Suites Swimming Pool",
+      },
+      {
+        src: "1_momq7j",
+        alt: "Urban Suites Main",
       },
       {
         src: "5_esn2rn",

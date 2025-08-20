@@ -191,7 +191,7 @@ export default function EnquiryForm() {
 
         {/* Enquiry Form Modal */}
         {isOpen && (
-          <div className="absolute bottom-16 right-0 w-80 bg-secondary opacity-90 rounded-lg shadow-2xl border border-gray-200">
+          <div className="absolute bottom-16 right-0 w-80 bg-secondary opacity-90 rounded-lg shadow-2xl border border-primary">
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-primary">

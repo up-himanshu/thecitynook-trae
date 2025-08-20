@@ -102,7 +102,8 @@ export default function Footer() {
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
           <p>
             © {new Date().getFullYear()} The City Nook. All rights reserved. |{" "}
-            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/privacy-policy">Privacy Policy</a> |{" "}
+            <a href="/refund-policy">Refund Policy</a>
           </p>
         </div>
       </div>
